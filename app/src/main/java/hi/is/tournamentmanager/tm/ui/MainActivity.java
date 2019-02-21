@@ -1,7 +1,9 @@
-package hi.is.tournamentmanager.tm;
+package hi.is.tournamentmanager.tm.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import hi.is.tournamentmanager.tm.R;
 
 public class MainActivity extends AppCompatActivity {
 
