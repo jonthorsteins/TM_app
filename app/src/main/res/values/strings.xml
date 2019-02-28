@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">TM</string>
+    <string name="app_name">Tournament Manager</string>
+    <string name="signIn_button">Sign In</string>
+    <string name="signUp_button">Sign Up</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="intro_text">Please sign in to continue</string>
+    <string name="login_failed">Login failed.</string>
 </resources>
