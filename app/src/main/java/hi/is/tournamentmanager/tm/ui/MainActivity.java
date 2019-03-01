@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import hi.is.tournamentmanager.tm.R;
 
 
 public class MainActivity extends AppCompatActivity {

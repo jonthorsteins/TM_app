@@ -6,6 +6,10 @@ public class Team {
     private Tournament tournament;
 
     public Team(){}
+    public Team(long id, String name){
+        this.id = id;
+        this.name = name;
+    }
     public Team(String name, Tournament tournament){
         this.name = name;
         this.tournament = tournament;
