@@ -1,8 +1,9 @@
 package hi.is.tournamentmanager.tm.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Match implements Comparable<Match> {
+public class Match implements Comparable<Match>, Serializable {
     private long id;
     private int homeTeamScore;
     private int awayTeamScore;

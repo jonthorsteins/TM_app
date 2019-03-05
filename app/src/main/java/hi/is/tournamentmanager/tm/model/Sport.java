@@ -1,5 +1,7 @@
 package hi.is.tournamentmanager.tm.model;
 
-public enum Sport {
+import java.io.Serializable;
+
+public enum Sport implements Serializable {
     Football, Handball, Basketball
 }

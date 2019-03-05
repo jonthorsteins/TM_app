@@ -3,9 +3,7 @@ package hi.is.tournamentmanager.tm.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Tournament implements Serializable {
 
@@ -15,7 +13,7 @@ public class Tournament implements Serializable {
     private Date signUpExpiration;
     private int maxTeams = 10;
     private int nrOfRounds = 2;
-    private Set<Team> teams = new HashSet<>();
+    private List<Team> teams = new ArrayList<>();
     private List<Match> matches = new ArrayList<>();
     private User user;
     private Sport sport = Sport.Football;
@@ -33,8 +31,8 @@ public class Tournament implements Serializable {
         this.isPublic = isPublic;
     }
 
-    public Set<Team> getTeams() { return teams; }
-    public void setTeams(Set<Team> teams) { this.teams = teams; }
+    public List<Team> getTeams() { return teams; }
+    public void setTeams(List<Team> teams) { this.teams = teams; }
 
     public Date getCreated() {
         return created;
