@@ -14,8 +14,8 @@ import cz.msebera.android.httpclient.message.BasicHeader;
 
 public class NetworkHandler {
 
-    //private static final String BASE_URL = "http://10.0.2.2:8080"; // When running emulator
-    private static final String BASE_URL = "http://192.168.1.5:8080"; // When running on via USB
+    private static final String BASE_URL = "http://10.0.2.2:8080"; // When running emulator
+    //private static final String BASE_URL = "http://192.168.1.5:8080"; // When running on via USB
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {

@@ -51,6 +51,7 @@ public class Mapper {
             List<Team> teams = mapToTeamsList(json.getJSONArray("teams"));
             List<Match> matches = mapToMatchList(json.getJSONArray("matches"), teams);
             t = new Tournament();
+            t.setName(name);
         } catch (Exception e) {
             t = null;
             Log.e("Mapper", e.toString());

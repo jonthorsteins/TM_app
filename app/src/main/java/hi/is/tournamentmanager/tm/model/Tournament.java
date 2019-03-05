@@ -1,17 +1,18 @@
 package hi.is.tournamentmanager.tm.model;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Tournament {
+public class Tournament implements Serializable {
 
     private long id;
     private String name;
-    private LocalDateTime created;
-    private LocalDateTime signUpExpiration;
+    private Date created;
+    private Date signUpExpiration;
     private int maxTeams = 10;
     private int nrOfRounds = 2;
     private Set<Team> teams = new HashSet<>();
@@ -24,7 +25,7 @@ public class Tournament {
 
     public Tournament(User user) { this.user = user; }
 
-    public Tournament(String name, LocalDateTime signUpExpiration, int maxTeams, int nrOfRounds, boolean isPublic) {
+    public Tournament(String name, Date signUpExpiration, int maxTeams, int nrOfRounds, boolean isPublic) {
         this.name = name;
         this.signUpExpiration = signUpExpiration;
         this.maxTeams = maxTeams;
@@ -35,17 +36,17 @@ public class Tournament {
     public Set<Team> getTeams() { return teams; }
     public void setTeams(Set<Team> teams) { this.teams = teams; }
 
-    public LocalDateTime getCreated() {
+    public Date getCreated() {
         return created;
     }
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
-    public LocalDateTime getSignUpExpiration() {
+    public Date getSignUpExpiration() {
         return signUpExpiration;
     }
-    public void setSignUpExpiration(LocalDateTime signUpExpiration) {
+    public void setSignUpExpiration(Date signUpExpiration) {
         this.signUpExpiration = signUpExpiration;
     }
 
