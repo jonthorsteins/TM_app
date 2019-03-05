@@ -1,11 +1,17 @@
 package hi.is.tournamentmanager.tm.model;
 
-public class Team {
+import java.io.Serializable;
+
+public class Team implements Serializable {
     private long id;
     private String name;
     private Tournament tournament;
 
     public Team(){}
+    public Team(long id, String name){
+        this.id = id;
+        this.name = name;
+    }
     public Team(String name, Tournament tournament){
         this.name = name;
         this.tournament = tournament;
