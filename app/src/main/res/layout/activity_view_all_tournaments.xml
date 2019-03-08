@@ -3,19 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.ViewAllTournamentsActivity">
 
-    <ListView android:id="@android:id/list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#00FF00"
-        android:layout_weight="1"
-        android:drawSelectorOnTop="false"/>
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary">
 
-    <TextView android:id="@android:id/empty"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:textSize="24dp"
+            android:text="Tournaments" />
+
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FF0000"
-        android:text="No data"/>
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="2dp"/>
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:text="No data"
+        android:textSize="20dp"/>
 
 </LinearLayout>
