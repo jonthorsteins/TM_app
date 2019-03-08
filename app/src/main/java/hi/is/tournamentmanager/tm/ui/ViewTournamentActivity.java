@@ -7,6 +7,7 @@ import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.model.Tournament;
 
 public class ViewTournamentActivity extends AppCompatActivity {
+    private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

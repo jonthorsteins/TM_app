@@ -43,16 +43,16 @@ public class Mapper {
             @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
             Date created = format.parse(json.getString("created"));
             Date signup = null;
-            if(json.get("signUpExpiration") != JSONObject.NULL)
-                signup = format.parse(json.getString("signUpExpiration"));
-            String owner = json.getString("owner");
-            int maxTeams = (int)json.get("maxTeams");
-            int rounds = (int)json.get("nrOfRounds");
+            if(json.get("signupexpiration") != JSONObject.NULL)
+                signup = format.parse(json.getString("signupexpiration"));
+            String owner = json.getString("userid");
+            int maxTeams = (int)json.get("maxteams");
+            int rounds = (int)json.get("rounds");
             long id = (long) (int) json.get("id");
-            //boolean isPublic = (boolean) json.get("isPublic");
+            boolean isPublic = (boolean) json.get("public");
             List<Team> teams = mapToTeamsList(json.getJSONArray("teams"));
             List<Match> matches = mapToMatchList(json.getJSONArray("matches"), teams);
-            String sport = json.getString("sport");
+            Sport sport = Sport.values()[(int)json.get("sport")];
             t = new Tournament();
             t.setName(name);
             t.setCreated(created);
@@ -60,10 +60,10 @@ public class Mapper {
             t.setNrOfRounds(rounds);
             t.setSignUpExpiration(signup);
             t.setId(id);
-            //t.setIsPublic(isPublic);
+            t.setIsPublic(isPublic);
             t.setTeams(teams);
             t.setMatches(matches);
-            t.setSport(Sport.valueOf(sport));
+            t.setSport(sport);
         } catch (Exception e) {
             t = null;
             Log.e("Mapper", e.toString());

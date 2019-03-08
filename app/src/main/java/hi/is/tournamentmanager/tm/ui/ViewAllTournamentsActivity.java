@@ -67,6 +67,8 @@ public class ViewAllTournamentsActivity extends ListActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 System.out.println(response.toString());
                 mTournaments = Mapper.mapToTournamentList(response);
+                TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
+                setListAdapter(adapter);
             }
         });
     }
