@@ -41,8 +41,8 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
                 int home = match.getHomeTeamScore();
                 int away = match.getAwayTeamScore();
-                Long homeTeam = match.getHomeTeam().getId();
-                Long awayTeam = match.getAwayTeam().getId();
+                Long homeTeam = match.getHomeTeamId();
+                Long awayTeam = match.getAwayTeamId();
 
                 int playedHome = gamesPlayed.get(homeTeam) == null ? 0 : gamesPlayed.get(homeTeam);
                 gamesPlayed.put(homeTeam, playedHome + 1);

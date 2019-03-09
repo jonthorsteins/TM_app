@@ -1,29 +1,34 @@
 package hi.is.tournamentmanager.tm.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Match implements Comparable<Match>, Serializable {
     private long id;
     private int homeTeamScore;
     private int awayTeamScore;
-    private LocalDateTime matchDate;
+    private Date matchDate;
     private int round;
     private String location;
-    private Team homeTeam;
-    private Team awayTeam;
+    private String homeTeam;
+    private String awayTeam;
     private boolean played;
-    private Tournament tournament;
+    private long tournamentId;
+    private long homeTeamId;
+    private long awayTeamId;
 
     public Match() {
     }
 
-    public Match(Team homeTeam, Team awayTeam, int round, Tournament tournament) {
+    public Match(long id, String homeTeam, String awayTeam,long homeTeamId, long awayTeamId, int round, long tournamentId, boolean played) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
+        this.homeTeamId = homeTeamId;
+        this.awayTeamId = awayTeamId;
+        this.played = played;
+        this.id = id;
         this.round = round;
-        played = false;
-        this.tournament = tournament;
+        this.tournamentId = tournamentId;
     }
 
     public Long getId() {
@@ -33,14 +38,20 @@ public class Match implements Comparable<Match>, Serializable {
         this.id = id;
     }
 
-    public Team getHomeTeam() { return homeTeam; }
-    public void setHomeTeam(Team homeTeam) { this.homeTeam = homeTeam; }
+    public String getHomeTeam() { return homeTeam; }
+    public void setHomeTeam(String homeTeam) { this.homeTeam = homeTeam; }
 
-    public Team getAwayTeam() { return awayTeam; }
-    public void setAwayTeam(Team awayTeam) { this.awayTeam = awayTeam; }
+    public String getAwayTeam() { return awayTeam; }
+    public void setAwayTeam(String awayTeam) { this.awayTeam = awayTeam; }
 
-    public Tournament getTournament() { return tournament; }
-    public void setTournament(Tournament tournament) { this.tournament = tournament; }
+    public long getHomeTeamId() { return homeTeamId; }
+    public void setHomeTeamId(long homeTeamId) { this.homeTeamId = homeTeamId; }
+
+    public long getAwayTeamId() { return awayTeamId; }
+    public void setAwayTeamId(long awayTeamId) { this.awayTeamId = awayTeamId; }
+
+    public long getTournament() { return tournamentId; }
+    public void setTournament(long tournament) { this.tournamentId = tournament; }
 
     public int getHomeTeamScore() {
         return homeTeamScore;
@@ -56,10 +67,10 @@ public class Match implements Comparable<Match>, Serializable {
         this.awayTeamScore = awayTeamScore;
     }
 
-    public LocalDateTime getMatchDate() {
+    public Date getMatchDate() {
         return matchDate;
     }
-    public void setMatchDate(LocalDateTime matchDate) {
+    public void setMatchDate(Date matchDate) {
         this.matchDate = matchDate;
     }
 
