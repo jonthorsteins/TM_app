@@ -1,7 +1,12 @@
 package hi.is.tournamentmanager.tm.ui;
 
-import android.os.Bundle;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +23,29 @@ import hi.is.tournamentmanager.tm.model.Tournament;
 public class ViewTournamentActivity extends AppCompatActivity {
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.profile:
+
+                    return true;
+                case R.id.view:
+                    Intent i = ViewAllTournamentsActivity.newIntent(ViewTournamentActivity.this, true);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
+                    finish();
+                    return true;
+                case R.id.create:
+                    //mTextMessage.setText(R.string.title_notifications);
+                    return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +53,9 @@ public class ViewTournamentActivity extends AppCompatActivity {
         Tournament t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
         List<ScoreboardItem> scoreboard = generateScoreboard(t);
         System.out.println(t.getName());
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     public List<ScoreboardItem> generateScoreboard(Tournament tournament) {

@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -38,6 +41,29 @@ public class ViewAllTournamentsActivity extends ListActivity {
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
     private List<Tournament> mTournaments;
     TextView mViewAll;
+
+/*    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.profile:
+
+                    return true;
+                case R.id.view:
+                    Intent i = ViewAllTournamentsActivity.newIntent(ViewAllTournamentsActivity.this, true);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
+                    finish();
+                    return true;
+                case R.id.create:
+                    //mTextMessage.setText(R.string.title_notifications);
+                    return true;
+            }
+            return false;
+        }
+    };*/
 
 
     public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
@@ -73,6 +99,9 @@ public class ViewAllTournamentsActivity extends ListActivity {
                 setListAdapter(adapter);
             }
         });
+
+        /*BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
     }
 
     @Override
