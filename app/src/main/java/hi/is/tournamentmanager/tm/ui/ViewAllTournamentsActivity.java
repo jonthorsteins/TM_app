@@ -3,6 +3,7 @@ package hi.is.tournamentmanager.tm.ui;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -22,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -93,6 +95,8 @@ public class ViewAllTournamentsActivity extends ListActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 System.out.println(response.toString());
                 mTournaments = Mapper.mapToTournamentList(response);
+                TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
+                setListAdapter(adapter);
             }
         });
 
@@ -130,6 +134,21 @@ public class ViewAllTournamentsActivity extends ListActivity {
             TextView textView = (TextView) rowView.findViewById(R.id.tournament_name);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
             textView.setText(t.getName());
+
+
+            textView = (TextView) rowView.findViewById(R.id.tournament_status);
+            Date currentDate = new Date();
+            if (t.getMatches().size() != 0) {
+                textView.setText("Started");
+                textView.setTextColor(Color.parseColor("#000000"));
+            } else if (t.getSignUpExpiration() == null ||
+                       t.getSignUpExpiration().compareTo(currentDate) < 0) {
+                textView.setText("Open");
+                textView.setTextColor(Color.parseColor("#00FF00"));
+            } else {
+                textView.setText("Closed");
+                textView.setTextColor(Color.parseColor("#FF00"));
+            }
             // Change the icon for Windows and iPhone
 
             return rowView;

@@ -1,9 +1,11 @@
 package hi.is.tournamentmanager.tm.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,12 +15,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+
 import hi.is.tournamentmanager.tm.R;
+import hi.is.tournamentmanager.tm.helpers.TokenStore;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mSignInButton;
+    public static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
+
+    SharedPreferences mSharedPreferences;
     // private static final int REQUEST_CODE_VIEWALLTOURNAMENTS = 0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -48,36 +55,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mSharedPreferences = getSharedPreferences(TOKEN_PREFERENCE, Context.MODE_PRIVATE);
+        TokenStore.clearToken(mSharedPreferences); // Used to force login each time app is booted
+        String token = TokenStore.getToken(mSharedPreferences);
 
-        mSignInButton = (Button) findViewById(R.id.signIn_button);
-        mSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean verifyLogin = true; // kalla á eitthvað verification fall
-                if (verifyLogin) {
-                    Intent i = ViewAllTournamentsActivity.newIntent(MainActivity.this, true);
-                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
-                    startActivity(i);
-                    finish();
-                } else {
-                    LayoutInflater inflater = getLayoutInflater();
-                    View layout = inflater.inflate(R.layout.custom_toast,
-                            (ViewGroup) findViewById(R.id.custom_toast_container));
-
-                    TextView text = (TextView) layout.findViewById(R.id.text);
-                    text.setText(R.string.login_failed);
-
-                    Toast toast = new Toast(getApplicationContext());
-                    toast.setGravity( Gravity.BOTTOM, 0, 50);
-                    toast.setDuration(Toast.LENGTH_LONG);
-                    toast.setView(layout);
-                    toast.show();
-                }
-            }
-        });
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        if (token.length() != 0) {
+            Intent i = new Intent(this, ViewAllTournamentsActivity.class);
+            startActivity(i);
+            finish();
+        } else {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
