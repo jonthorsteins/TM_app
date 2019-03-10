@@ -42,7 +42,7 @@ public class ViewAllTournamentsActivity extends ListActivity {
     private List<Tournament> mTournaments;
     TextView mViewAll;
 
-/*    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+   private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -59,11 +59,15 @@ public class ViewAllTournamentsActivity extends ListActivity {
                     return true;
                 case R.id.create:
                     //mTextMessage.setText(R.string.title_notifications);
+                    System.out.print("Create tournament");
+                    Intent is = new Intent(ViewAllTournamentsActivity.this, CreateTournamentActivity.class);
+                    startActivity(is);
+                    finish();
                     return true;
             }
             return false;
         }
-    };*/
+    };
 
 
     public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
@@ -100,8 +104,8 @@ public class ViewAllTournamentsActivity extends ListActivity {
             }
         });
 
-        /*BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     @Override
