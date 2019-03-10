@@ -42,26 +42,29 @@ public class ViewAllTournamentsActivity extends ListActivity {
     private List<Tournament> mTournaments;
     TextView mViewAll;
 
-   private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent i;
             switch (item.getItemId()) {
                 case R.id.profile:
-
+                    i = new Intent(ViewAllTournamentsActivity.this, ViewProfileActivity.class);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
+                    finish();
                     return true;
                 case R.id.view:
-                    Intent i = ViewAllTournamentsActivity.newIntent(ViewAllTournamentsActivity.this, true);
+                    i = ViewAllTournamentsActivity.newIntent(ViewAllTournamentsActivity.this, true);
                     // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
                     startActivity(i);
                     finish();
                     return true;
                 case R.id.create:
-                    //mTextMessage.setText(R.string.title_notifications);
-                    System.out.print("Create tournament");
-                    Intent is = new Intent(ViewAllTournamentsActivity.this, CreateTournamentActivity.class);
-                    startActivity(is);
+                    i = new Intent(ViewAllTournamentsActivity.this, CreateTournamentActivity.class);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
                     finish();
                     return true;
             }

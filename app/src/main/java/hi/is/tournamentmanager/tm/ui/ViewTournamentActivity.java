@@ -28,18 +28,25 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent i;
             switch (item.getItemId()) {
                 case R.id.profile:
-
+                    i = new Intent(ViewTournamentActivity.this, ViewProfileActivity.class);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
+                    finish();
                     return true;
                 case R.id.view:
-                    Intent i = ViewAllTournamentsActivity.newIntent(ViewTournamentActivity.this, true);
+                    i = ViewAllTournamentsActivity.newIntent(ViewTournamentActivity.this, true);
                     // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
                     startActivity(i);
                     finish();
                     return true;
                 case R.id.create:
-                    //mTextMessage.setText(R.string.title_notifications);
+                    i = new Intent(ViewTournamentActivity.this, CreateTournamentActivity.class);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
+                    finish();
                     return true;
             }
             return false;
