@@ -42,28 +42,35 @@ public class ViewAllTournamentsActivity extends ListActivity {
     private List<Tournament> mTournaments;
     TextView mViewAll;
 
-/*    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent i;
             switch (item.getItemId()) {
                 case R.id.profile:
-
+                    i = new Intent(ViewAllTournamentsActivity.this, ViewProfileActivity.class);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
+                    finish();
                     return true;
                 case R.id.view:
-                    Intent i = ViewAllTournamentsActivity.newIntent(ViewAllTournamentsActivity.this, true);
+                    i = ViewAllTournamentsActivity.newIntent(ViewAllTournamentsActivity.this, true);
                     // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
                     startActivity(i);
                     finish();
                     return true;
                 case R.id.create:
-                    //mTextMessage.setText(R.string.title_notifications);
+                    i = new Intent(ViewAllTournamentsActivity.this, CreateTournamentActivity.class);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
+                    finish();
                     return true;
             }
             return false;
         }
-    };*/
+    };
 
 
     public static Intent newIntent(Context packageContext, boolean answerIsTrue) {
@@ -100,8 +107,8 @@ public class ViewAllTournamentsActivity extends ListActivity {
             }
         });
 
-        /*BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);*/
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     @Override
