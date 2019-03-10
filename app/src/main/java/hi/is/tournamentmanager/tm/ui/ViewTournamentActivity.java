@@ -1,7 +1,14 @@
 package hi.is.tournamentmanager.tm.ui;
 
-import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +22,45 @@ import hi.is.tournamentmanager.tm.model.Sport;
 import hi.is.tournamentmanager.tm.model.Team;
 import hi.is.tournamentmanager.tm.model.Tournament;
 
+
 public class ViewTournamentActivity extends AppCompatActivity {
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
+
+    private static final String TAG = "MainActivity";
+
+    private SectionsPageAdapter mSectionsPageAdapter;
+
+    private ViewPager mViewPager;
+
+    public class SectionsPageAdapter extends FragmentPagerAdapter {
+
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        public SectionsPageAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +68,24 @@ public class ViewTournamentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_tournament);
         Tournament t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
         List<ScoreboardItem> scoreboard = generateScoreboard(t);
-        System.out.println(t.getName());
+        Log.d(TAG, "onCreate: Starting.");
+
+        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new ViewTournamentFrag1(), "Scoreboard");
+        adapter.addFragment(new ViewTournamentFrag2(), "Matches");
+        viewPager.setAdapter(adapter);
     }
 
     public List<ScoreboardItem> generateScoreboard(Tournament tournament) {
@@ -105,4 +166,5 @@ public class ViewTournamentActivity extends AppCompatActivity {
         Collections.sort(scoreboard, Collections.reverseOrder());
         return scoreboard;
     }
+
 }
