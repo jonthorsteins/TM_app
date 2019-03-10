@@ -1,10 +1,13 @@
 package hi.is.tournamentmanager.tm.ui;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +20,29 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mSignInButton;
     // private static final int REQUEST_CODE_VIEWALLTOURNAMENTS = 0;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.profile:
+
+                    return true;
+                case R.id.view:
+                    Intent i = ViewAllTournamentsActivity.newIntent(MainActivity.this, true);
+                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
+                    startActivity(i);
+                    finish();
+                    return true;
+                case R.id.create:
+                    //mTextMessage.setText(R.string.title_notifications);
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 }
