@@ -1,6 +1,9 @@
 package hi.is.tournamentmanager.tm.ui;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -9,9 +12,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,6 +41,24 @@ public class ViewTournamentActivity extends AppCompatActivity {
     private SectionsPageAdapter mSectionsPageAdapter;
 
     private ViewPager mViewPager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view_tournament);
+        Tournament t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
+        List<ScoreboardItem> scoreboard = generateScoreboard(t);
+        Log.d(TAG, "onCreate: Starting.");
+
+        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(mViewPager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+    }
 
     public class SectionsPageAdapter extends FragmentPagerAdapter {
 
@@ -62,28 +90,17 @@ public class ViewTournamentActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_tournament);
-        Tournament t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
-        List<ScoreboardItem> scoreboard = generateScoreboard(t);
-        Log.d(TAG, "onCreate: Starting.");
-
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        setupViewPager(mViewPager);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
-    }
-
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ViewTournamentFrag1(), "Scoreboard");
+
+        Tournament t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ViewTournamentFrag1 fragment = new ViewTournamentFrag1();
+        fragment = fragment.newInstance(t.getUuid());
+        //ft.replace(R.id.container, fragment);
+        //ft.commit();
+        adapter.addFragment(fragment, "Scoreboard");
         adapter.addFragment(new ViewTournamentFrag2(), "Matches");
         viewPager.setAdapter(adapter);
     }

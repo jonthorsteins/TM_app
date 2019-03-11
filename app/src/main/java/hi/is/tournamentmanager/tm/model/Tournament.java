@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class Tournament implements Serializable {
 
     private long id;
+    private UUID uuid;
     private String name;
     private Date created;
     private Date signUpExpiration;
@@ -19,7 +21,9 @@ public class Tournament implements Serializable {
     private Sport sport = Sport.Football;
     private boolean isPublic = true;
 
-    public Tournament() { }
+    public Tournament() {
+        this.uuid = UUID.randomUUID();
+    }
 
     public Tournament(User user) { this.user = user; }
 
@@ -65,6 +69,8 @@ public class Tournament implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
+
+    public UUID getUuid() {return uuid;}
 
     public String getName() {
         return name;

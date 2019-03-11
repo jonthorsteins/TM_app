@@ -4,19 +4,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/scoreboardHeader"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textSize="25sp"
-        android:text="Tab1"
-        android:layout_marginTop="40dp"
-        android:id="@+id/textTab1"/>
+        android:orientation="horizontal">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnTEST"
-        android:text="TESTBTN 1"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/header_team"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/header_gamesPlayed"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/header_goalsFor"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/header_goalsAgainst"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+                android:text="@string/header_points"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/scoreboardHeader"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false"
+        android:listSelector="@android:color/transparent"
+        android:divider="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/scoreboardHeader"
+        android:layout_gravity="center"
+        android:text=""
+        android:textSize="20dp"/>
 
 </RelativeLayout>

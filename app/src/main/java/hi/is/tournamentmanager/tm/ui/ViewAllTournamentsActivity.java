@@ -28,6 +28,7 @@ import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.helpers.Mapper;
 import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
 import hi.is.tournamentmanager.tm.model.Tournament;
+import hi.is.tournamentmanager.tm.model.TournamentLab;
 
 public class ViewAllTournamentsActivity extends ListActivity {
 
@@ -51,6 +52,7 @@ public class ViewAllTournamentsActivity extends ListActivity {
         setContentView(R.layout.activity_view_all_tournaments);
         final Context ct = getApplicationContext();
 
+        TournamentLab.get(ct);
 
         NetworkHandler.get("/tournaments",  null, new JsonHttpResponseHandler() {
             @Override
@@ -58,6 +60,9 @@ public class ViewAllTournamentsActivity extends ListActivity {
                 System.out.println(response.toString());
                 try{
                     mTournaments = Mapper.mapToTournamentList(response.getJSONArray("tournaments"));
+
+                    TournamentLab.get(getApplicationContext()).setTournaments(mTournaments);
+
                     TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
                     setListAdapter(adapter);
 
@@ -69,6 +74,9 @@ public class ViewAllTournamentsActivity extends ListActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 System.out.println(response.toString());
                 mTournaments = Mapper.mapToTournamentList(response);
+
+                TournamentLab.get(getApplicationContext()).setTournaments(mTournaments);
+
                 TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
                 setListAdapter(adapter);
             }
