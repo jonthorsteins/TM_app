@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                     return;
                 }
-                NetworkHandler.post("/login", body, "application/json", new JsonHttpResponseHandler() {
+                NetworkHandler.post("/login", body, "application/json", null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         System.out.println(response.toString());

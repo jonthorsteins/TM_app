@@ -154,7 +154,7 @@ public class ViewAllTournamentsActivity extends ListActivity {
                 textView.setTextColor(Color.parseColor("#00FF00"));
             } else {
                 textView.setText("Closed");
-                textView.setTextColor(Color.parseColor("#FF00"));
+                textView.setTextColor(Color.parseColor("#FF0000"));
             }
             // Change the icon for Windows and iPhone
 
