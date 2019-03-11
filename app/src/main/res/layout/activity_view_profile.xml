@@ -4,45 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ViewProfileActivity">
+    tools:context=".ui.ViewProfileActivity"><![CDATA[
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="239dp"
-        android:layout_height="154dp"
-        android:drawableBottom="@drawable/ic_account_circle_black_24dp"
-        android:fontFamily="sans-serif"
-        android:text="Username "
-        android:textAlignment="center"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="86dp"
-        tools:layout_editor_absoluteY="38dp" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Tournaments"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="206dp" />
 
-    <View
-        style="@style/Divider"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="252dp" />
-
-    <ListView
-        android:id="@+id/TournamentList"
-        android:layout_width="395dp"
-        android:layout_height="462dp"
-        android:dividerHeight="1dp"
-        android:clickable="true"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="261dp"
-        android:choiceMode="singleChoice" />
     />
+
+
+
+
+
+    ]]>
+
+    <LinearLayout
+        android:layout_width="419dp"
+        android:layout_height="744dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Tournaments"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableBottom="@drawable/ic_account_circle_black_24dp"
+            android:fontFamily="sans-serif"
+            android:text="Username "
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <View
+            style="@style/Divider" />
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="395dp"
+            android:layout_height="462dp"
+            android:choiceMode="singleChoice"
+            android:clickable="true"
+            android:dividerHeight="1dp" />
+
+    </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -55,6 +68,8 @@
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navigation_menu" />
 
 
