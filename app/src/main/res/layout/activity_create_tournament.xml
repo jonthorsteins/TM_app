@@ -17,7 +17,7 @@
         android:paddingLeft="20dp"
         android:paddingTop="60dp"
         android:paddingRight="20dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_signup"
+        app:layout_constraintBottom_toTopOf="@id/btn_create_tournament"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -193,7 +193,7 @@
     </android.support.design.widget.BottomNavigationView>
 
     <Button
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_create_tournament"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"

@@ -26,7 +26,7 @@ public class NetworkHandler {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    public static void post(String url, JSONObject data, String type, AsyncHttpResponseHandler responseHandler) {
+    public static void post(String url, JSONObject data, String type, String token, AsyncHttpResponseHandler responseHandler) {
         StringEntity body = null;
         try {
             body = new StringEntity(data.toString());
@@ -34,7 +34,11 @@ public class NetworkHandler {
             e.printStackTrace();
             return;
         }
-        body.setContentType(new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json"));
+        body.setContentType(new BasicHeader(HttpHeaders.CONTENT_TYPE, type));
+        System.out.print(token);
+        client.setAuthenticationPreemptive(true);
+        if(token != null)
+            client.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         client.post(null, getAbsoluteUrl(url), body, type, responseHandler);
     }
 
