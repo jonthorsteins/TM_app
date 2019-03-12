@@ -1,6 +1,7 @@
 package hi.is.tournamentmanager.tm.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -14,6 +15,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,10 +36,6 @@ public class ViewTournamentActivity extends AppCompatActivity {
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
 
     private static final String TAG = "MainActivity";
-
-    private SectionsPageAdapter mSectionsPageAdapter;
-
-    private ViewPager mViewPager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -72,20 +73,42 @@ public class ViewTournamentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_tournament);
         Tournament t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
         List<ScoreboardItem> scoreboard = generateScoreboard(t);
-        System.out.println(t.getName());
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        TextView textView  = findViewById(R.id.view_tournament_name);
+        textView.setText(t.getName());
+
+        startTournamentButtonSetup(t);
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Log.d(TAG, "onCreate: Starting.");
 
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
+        SectionsPageAdapter mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+    }
+
+    private void startTournamentButtonSetup(Tournament t) {
+        boolean isOwner = true;
+        if (isOwner && t.getMatches().isEmpty()) {
+            final Button mStartTourament = findViewById(R.id.btn_start_tournament);
+            mStartTourament.setVisibility(View.VISIBLE);
+            mStartTourament.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startTourament();
+                }
+            });
+        }
+    }
+
+    private void startTourament() {
+        System.out.println("Start Tournament");
     }
 
     public class SectionsPageAdapter extends FragmentPagerAdapter {
@@ -123,14 +146,16 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
         Tournament t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ViewTournamentFrag1 fragment = new ViewTournamentFrag1();
-        fragment = fragment.newInstance(t.getUuid());
-        //ft.replace(R.id.container, fragment);
-        //ft.commit();
-        adapter.addFragment(fragment, "Scoreboard");
-        adapter.addFragment(new ViewTournamentFrag2(), "Matches");
+        //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        ViewTournamentFrag1 fragment1 = new ViewTournamentFrag1();
+        fragment1 = fragment1.newInstance(t.getUuid());
+        ViewTournamentFrag2 fragment2 = new ViewTournamentFrag2();
+        fragment2 = fragment2.newInstance(t.getUuid());
+        adapter.addFragment(fragment1, "Scoreboard");
+        adapter.addFragment(fragment2, "Matches");
         viewPager.setAdapter(adapter);
+
     }
 
     public List<ScoreboardItem> generateScoreboard(Tournament tournament) {

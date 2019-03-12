@@ -17,7 +17,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 
 public class NetworkHandler {
-
+    //private static final String BASE_URL = "http://10.0.2.2:3000"; // When running locally on emulator
     private static final String BASE_URL = "https://tmrest.herokuapp.com"; // When running emulator
     //private static final String BASE_URL = "http://192.168.1.5:3000"; // When running on via USB
     private static AsyncHttpClient client = new AsyncHttpClient();

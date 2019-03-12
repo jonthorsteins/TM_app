@@ -47,7 +47,6 @@ public class ViewTournamentFrag1 extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment1_view_tournament,container,false);
         ListView listView = (ListView) view.findViewById(R.id.list);
-        //container.addView(view.findViewById(R.id.scoreboardHeader));
 
 
         Bundle args = getArguments();
@@ -57,7 +56,9 @@ public class ViewTournamentFrag1 extends Fragment {
         List<ScoreboardItem> scoreboard = generateScoreboard(mTournament);
 
         if (scoreboard.isEmpty()) {
-            container.addView(view.findViewById(R.id.empty));
+            view.findViewById(R.id.empty).setVisibility(View.VISIBLE);
+        } else if (mTournament.getTeams().isEmpty()) {
+            view.findViewById(R.id.noTeams).setVisibility(View.VISIBLE);
         } else {
             final Context ct = getActivity();
             ScoreboardArrayAdapter adapter = new ScoreboardArrayAdapter(ct, scoreboard);
@@ -71,7 +72,7 @@ public class ViewTournamentFrag1 extends Fragment {
         private final Context context;
         private final List<ScoreboardItem> values;
 
-        public ScoreboardArrayAdapter(Context context, List<ScoreboardItem> values) {
+        private ScoreboardArrayAdapter(Context context, List<ScoreboardItem> values) {
             super(context, R.layout.scoreboard_list_row, values);
             this.context = context;
             this.values = values;
@@ -84,19 +85,19 @@ public class ViewTournamentFrag1 extends Fragment {
             View rowView = inflater.inflate(R.layout.scoreboard_list_row, parent, false);
             ScoreboardItem s = values.get(position);
 
-            TextView textView = (TextView) rowView.findViewById(R.id.team);
+            TextView textView = rowView.findViewById(R.id.team);
             textView.setText(s.getTeam());
 
-            textView = (TextView) rowView.findViewById(R.id.gamesPlayed);
+            textView = rowView.findViewById(R.id.gamesPlayed);
             textView.setText(Integer.toString(s.getGamesPlayed()));
 
-            textView = (TextView) rowView.findViewById(R.id.goalsFor);
+            textView = rowView.findViewById(R.id.goalsFor);
             textView.setText(Integer.toString(s.getGoalsFor()));
 
-            textView = (TextView) rowView.findViewById(R.id.goalsAgainst);
+            textView = rowView.findViewById(R.id.goalsAgainst);
             textView.setText(Integer.toString(s.getGoalsAgainst()));
 
-            textView = (TextView) rowView.findViewById(R.id.points);
+            textView = rowView.findViewById(R.id.points);
             textView.setText(Integer.toString(s.getPoints()));
 
 
