@@ -12,8 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.LoginActivity" android:noHistory="true"></activity>
-        <activity android:name=".ui.ViewTournamentActivity" />
+        <activity
+            android:name=".ui.ViewTournamentActivity"
+            android:label="@string/title_activity_view_tournament"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:noHistory="true" />
         <activity android:name=".ui.ViewProfileActivity" />
         <activity android:name=".ui.ViewAllTournamentsActivity" />
         <activity android:name=".ui.EditTournamentActivity" />
