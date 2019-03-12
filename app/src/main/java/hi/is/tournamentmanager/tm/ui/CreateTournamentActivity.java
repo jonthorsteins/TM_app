@@ -33,11 +33,15 @@ import java.util.TimeZone;
 
 import cz.msebera.android.httpclient.Header;
 import hi.is.tournamentmanager.tm.R;
+import hi.is.tournamentmanager.tm.helpers.Mapper;
 import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
 import hi.is.tournamentmanager.tm.helpers.TokenStore;
+import hi.is.tournamentmanager.tm.model.Tournament;
+import hi.is.tournamentmanager.tm.model.TournamentLab;
 
 public class CreateTournamentActivity extends AppCompatActivity {
-    public static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
+    private static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
+    private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -205,6 +209,14 @@ public class CreateTournamentActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 System.out.println(response.toString());
+
+                Intent intent = new Intent(CreateTournamentActivity.this, ViewTournamentActivity.class);
+                Tournament t = Mapper.mapToTournament(response);
+                TournamentLab tl = TournamentLab.get(getApplicationContext());
+                tl.addTournament(t);
+                intent.putExtra(TOURNAMENT_ITEM, t);
+                startActivity(intent);
+                finish();
             }
 
             @Override
