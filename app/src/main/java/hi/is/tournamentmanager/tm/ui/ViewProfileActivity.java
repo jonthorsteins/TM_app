@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,20 +16,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.Date;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import hi.is.tournamentmanager.tm.R;
-import hi.is.tournamentmanager.tm.helpers.Mapper;
-import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
 import hi.is.tournamentmanager.tm.model.Tournament;
+import hi.is.tournamentmanager.tm.model.TournamentLab;
 
 public class ViewProfileActivity extends ListActivity {
 
@@ -84,29 +75,9 @@ public class ViewProfileActivity extends ListActivity {
         setContentView(R.layout.activity_view_profile);
         final Context ct = getApplicationContext();
 
-
-        NetworkHandler.get("/tournaments",  null, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                System.out.println(response.toString());
-
-                try{
-                    mTournaments = Mapper.mapToTournamentList(response.getJSONArray("tournaments"));
-                    TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
-                    setListAdapter(adapter);
-
-                } catch (JSONException e){
-                    Log.e("Mapper", e.toString());
-                }
-            }
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                System.out.println(response.toString());
-                mTournaments = Mapper.mapToTournamentList(response);
-                TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
-                setListAdapter(adapter);
-            }
-        });
+        mTournaments = TournamentLab.get(getApplicationContext()).getTournaments();
+        TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
+        setListAdapter(adapter);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -155,9 +126,8 @@ public class ViewProfileActivity extends ListActivity {
                 textView.setTextColor(Color.parseColor("#00FF00"));
             } else {
                 textView.setText("Closed");
-                textView.setTextColor(Color.parseColor("#FF00"));
+                textView.setTextColor(Color.parseColor("#FF0000"));
             }
-            // Change the icon for Windows and iPhone
 
             return rowView;
         }

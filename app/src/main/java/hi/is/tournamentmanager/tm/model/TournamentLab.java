@@ -49,4 +49,8 @@ public class TournamentLab {
         System.out.println("Fjöldi tournamenta: " + mTournaments.size());
         return null;
     }
+
+    public void addTournament(Tournament tournament) {
+        mTournaments.add(tournament);
+    }
 }
