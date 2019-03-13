@@ -47,7 +47,7 @@ public class ViewProfileActivity extends ListActivity {
                     finish();
                     return true;
                 case R.id.view:
-                    i = ViewProfileActivity.newIntent(ViewProfileActivity.this, true);
+                    i = ViewAllTournamentsActivity.newIntent(ViewProfileActivity.this, true);
                     // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
                     startActivity(i);
                     finish();
