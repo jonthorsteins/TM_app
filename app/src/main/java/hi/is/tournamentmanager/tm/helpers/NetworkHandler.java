@@ -43,6 +43,7 @@ public class NetworkHandler {
     }
 
     private static String getAbsoluteUrl(String relativeUrl) {
+        System.out.print("Request at: " + BASE_URL + relativeUrl);
         return BASE_URL + relativeUrl;
     }
 

@@ -1,5 +1,6 @@
 package hi.is.tournamentmanager.tm.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -20,22 +21,35 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpHeaders;
 import hi.is.tournamentmanager.tm.R;
+import hi.is.tournamentmanager.tm.helpers.Mapper;
+import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
+import hi.is.tournamentmanager.tm.helpers.TokenStore;
 import hi.is.tournamentmanager.tm.model.Match;
 import hi.is.tournamentmanager.tm.model.ScoreboardItem;
 import hi.is.tournamentmanager.tm.model.Sport;
 import hi.is.tournamentmanager.tm.model.Team;
 import hi.is.tournamentmanager.tm.model.Tournament;
+import hi.is.tournamentmanager.tm.model.TournamentLab;
 
 public class ViewTournamentActivity extends AppCompatActivity {
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
+    private static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
 
     private static final String TAG = "MainActivity";
+    Tournament t;
+    SharedPreferences mSharedPreferences;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,7 +85,9 @@ public class ViewTournamentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tournament);
-        Tournament t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
+        t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
+        mSharedPreferences = getSharedPreferences(TOKEN_PREFERENCE, Context.MODE_PRIVATE);
+
         List<ScoreboardItem> scoreboard = generateScoreboard(t);
 
         TextView textView  = findViewById(R.id.view_tournament_name);
@@ -109,6 +125,24 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
     private void startTourament() {
         System.out.println("Start Tournament");
+        String token = TokenStore.getToken(mSharedPreferences);
+
+        NetworkHandler.post("/tournaments/"+t.getId()+"/start", new JSONObject(), "application/json", token, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                System.out.println(response.toString());
+
+                Intent i = new Intent(ViewTournamentActivity.this, ViewTournamentActivity.class);
+                i.putExtra(TOURNAMENT_ITEM, Mapper.mapToTournament(response));
+                startActivity(i);
+                finish();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                System.out.println(errorResponse.toString());
+            }
+        });
     }
 
     public class SectionsPageAdapter extends FragmentPagerAdapter {
