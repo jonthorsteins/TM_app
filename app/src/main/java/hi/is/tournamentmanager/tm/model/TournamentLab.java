@@ -20,6 +20,8 @@ public class TournamentLab {
     private static TournamentLab sTournamentLab;
 
     private List<Tournament> mTournaments;
+    private List<Tournament> mMyTournaments;
+    private List<Tournament> mSubscriptions;
 
     public static TournamentLab get(Context context) {
         System.out.println("Main constructor");
@@ -30,6 +32,8 @@ public class TournamentLab {
     public void setTournaments(List<Tournament> tournamentList) {
         mTournaments = tournamentList;
     }
+    public void setMyTournaments(List<Tournament> tournamentList) { mMyTournaments = tournamentList; }
+    public void setSubscriptions(List<Tournament> tournamentList) { mSubscriptions = tournamentList; }
 
     private TournamentLab(Context context) {
         System.out.println("Second constructor");
@@ -37,6 +41,12 @@ public class TournamentLab {
 
     public List<Tournament> getTournaments() {
         return mTournaments;
+    }
+    public List<Tournament> getMyTournaments() {
+        return mMyTournaments;
+    }
+    public List<Tournament> getSubscriptions() {
+        return mSubscriptions;
     }
 
     public Tournament getTournament(UUID id) {
@@ -52,5 +62,25 @@ public class TournamentLab {
 
     public void addTournament(Tournament tournament) {
         mTournaments.add(tournament);
+    }
+    public void addSubscription(Tournament tournament) {
+        mSubscriptions.add(tournament);
+    }
+    public void addMyTournament(Tournament tournament) {
+        mMyTournaments.add(tournament);
+    }
+
+    public boolean isSubscribed(long id) {
+        for(Tournament t: mSubscriptions){
+            if(t.getId() == id) return true;
+        }
+        return false;
+    }
+
+    public boolean isOwner(long id){
+        for(Tournament t: mSubscriptions){
+            if(t.getUser() == id) return true;
+        }
+        return false;
     }
 }

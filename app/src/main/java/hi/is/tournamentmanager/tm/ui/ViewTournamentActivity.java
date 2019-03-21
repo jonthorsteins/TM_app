@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -46,6 +47,7 @@ import hi.is.tournamentmanager.tm.model.TournamentLab;
 public class ViewTournamentActivity extends AppCompatActivity {
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
     private static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
+    private static final String USER_PREFERENCE = "USER_PREFERENCE";
 
     private static final String TAG = "MainActivity";
     Tournament t;
@@ -92,6 +94,16 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
         TextView textView  = findViewById(R.id.view_tournament_name);
         textView.setText(t.getName());
+        if(TournamentLab.get(getApplicationContext()).isSubscribed(t.getId())) {
+            findViewById(R.id.subscribe).setVisibility(View.GONE);
+            findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
+        }
+
+        Long user = TokenStore.getUser(mSharedPreferences);
+        if(TournamentLab.get(getApplicationContext()).isOwner(user)){
+            findViewById(R.id.unsubscribe).setVisibility(View.GONE);
+            findViewById(R.id.subscribe).setVisibility(View.GONE);
+        }
 
         startTournamentButtonSetup(t);
 
@@ -110,8 +122,8 @@ public class ViewTournamentActivity extends AppCompatActivity {
     }
 
     private void startTournamentButtonSetup(Tournament t) {
-        boolean isOwner = true;
-        if (isOwner && t.getMatches().isEmpty()) {
+        Long user = TokenStore.getUser(mSharedPreferences);
+        if (t.getMatches().isEmpty() && TournamentLab.get(getApplicationContext()).isOwner(user)) {
             final Button mStartTourament = findViewById(R.id.btn_start_tournament);
             mStartTourament.setVisibility(View.VISIBLE);
             mStartTourament.setOnClickListener(new View.OnClickListener() {
@@ -269,5 +281,60 @@ public class ViewTournamentActivity extends AppCompatActivity {
         }
         Collections.sort(scoreboard, Collections.reverseOrder());
         return scoreboard;
+    }
+
+    public void subscribe(View view){
+
+        String token = TokenStore.getToken(mSharedPreferences);
+        NetworkHandler.post("/tournaments/"+t.getId()+"/sub", new JSONObject(),"application/json", token, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Context context = getApplicationContext();
+                CharSequence text = "Subscribed success!";
+                int duration = Toast.LENGTH_SHORT;
+                findViewById(R.id.subscribe).setVisibility(View.GONE);
+                findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
+                (TournamentLab.get(getApplicationContext())).addSubscription(t);
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Context context = getApplicationContext();
+                CharSequence text = "Subscribed failed!";
+                int duration = Toast.LENGTH_SHORT;
+
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
+    }
+
+    public void unsubscribe(View view){
+        String token = TokenStore.getToken(mSharedPreferences);
+        NetworkHandler.post("/tournaments/"+t.getId()+"/unsub", new JSONObject(),"application/json", token, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Context context = getApplicationContext();
+                CharSequence text = "Unsubscribed success!";
+                int duration = Toast.LENGTH_SHORT;
+                findViewById(R.id.subscribe).setVisibility(View.VISIBLE);
+                findViewById(R.id.unsubscribe).setVisibility(View.GONE);
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Context context = getApplicationContext();
+                CharSequence text = "Unsubscribed failed!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();            }
+        });
     }
 }

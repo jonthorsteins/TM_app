@@ -22,7 +22,9 @@ public class NetworkHandler {
     //private static final String BASE_URL = "http://192.168.1.5:3000"; // When running on via USB
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public static void get(String url, RequestParams params, String token, AsyncHttpResponseHandler responseHandler) {
+        if(token != null)
+            client.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 

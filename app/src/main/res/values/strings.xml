@@ -14,6 +14,7 @@
     <string name="label_public">Public</string>
     <string name="label_signUp">Sign up expiration</string>
     <string name="label_create">Create tournament</string>
+    <string name="subscribe">Subscribe</string>
     <string-array name="sports">
         <item>Football</item>
         <item>Handball</item>
