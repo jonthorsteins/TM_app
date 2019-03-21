@@ -1,6 +1,8 @@
 package hi.is.tournamentmanager.tm.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -103,6 +105,7 @@ public class ViewTournamentActivity extends AppCompatActivity {
         if(TournamentLab.get(getApplicationContext()).isOwner(user)){
             findViewById(R.id.unsubscribe).setVisibility(View.GONE);
             findViewById(R.id.subscribe).setVisibility(View.GONE);
+            findViewById(R.id.delete_tournament).setVisibility(View.VISIBLE);
         }
 
         startTournamentButtonSetup(t);
@@ -123,16 +126,46 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
     private void startTournamentButtonSetup(Tournament t) {
         Long user = TokenStore.getUser(mSharedPreferences);
-        if (t.getMatches().isEmpty() && TournamentLab.get(getApplicationContext()).isOwner(user)) {
-            final Button mStartTourament = findViewById(R.id.btn_start_tournament);
-            mStartTourament.setVisibility(View.VISIBLE);
-            mStartTourament.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startTourament();
-                }
-            });
+        if(TournamentLab.get(getApplicationContext()).isOwner(user) && t.getMatches().isEmpty()) {
+                final Button mStartTourament = findViewById(R.id.btn_start_tournament);
+                mStartTourament.setVisibility(View.VISIBLE);
+                mStartTourament.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startTourament();
+                    }
+                });
         }
+    }
+
+    public void deleteTournament(View view){
+
+        new AlertDialog.Builder(this)
+                .setTitle("Delete tournament")
+                .setMessage("Are you sure you want to delete this tournament?")
+
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
+                        String token = TokenStore.getToken(mSharedPreferences);
+                        Context context = getApplicationContext();
+                        CharSequence text = "Delete tournament";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                        //NetworkHandler.delete("/tournaments/"+t.getId(), null, token, new JsonHttpResponseHandler(){
+
+                        //});
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void startTourament() {
@@ -314,7 +347,7 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
     public void unsubscribe(View view){
         String token = TokenStore.getToken(mSharedPreferences);
-        NetworkHandler.post("/tournaments/"+t.getId()+"/unsub", new JSONObject(),"application/json", token, new JsonHttpResponseHandler() {
+        NetworkHandler.delete("/tournaments/"+t.getId()+"/sub",null, token, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Context context = getApplicationContext();
@@ -334,7 +367,8 @@ public class ViewTournamentActivity extends AppCompatActivity {
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(context, text, duration);
-                toast.show();            }
+                toast.show();
+            }
         });
     }
 }

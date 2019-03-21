@@ -44,6 +44,12 @@ public class NetworkHandler {
         client.post(null, getAbsoluteUrl(url), body, type, responseHandler);
     }
 
+    public static void delete(String url, RequestParams params, String token, AsyncHttpResponseHandler responseHandler) {
+        if(token != null)
+            client.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        client.delete(getAbsoluteUrl(url), params, responseHandler);
+    }
+
     private static String getAbsoluteUrl(String relativeUrl) {
         System.out.print("Request at: " + BASE_URL + relativeUrl);
         return BASE_URL + relativeUrl;
