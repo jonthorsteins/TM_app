@@ -4,9 +4,15 @@
     <string name="signUp_button">Sign Up</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
+    <string name="password_again">Repeat Password</string>
     <string name="intro_text">Please sign in to continue</string>
     <string name="login_failed">Login failed.</string>
+    <string name="signup_failed">Signup failed.</string>
+    <string name="nomatch_password">Passwords do not match</string>
     <string name="signIn_info">Sign in to continue</string>
+    <string name="signUp_info">Create an account to continue</string>
+    <string name="signIn_new">Need an account? Create one.</string>
+    <string name="signUp_new">Have an account? Login.</string>
     <string name="label_name">Name</string>
     <string name="label_maxTeams">Max teams</string>
     <string name="label_sport">Sport</string>
@@ -15,6 +21,8 @@
     <string name="label_signUp">Sign up expiration</string>
     <string name="label_create">Create tournament</string>
     <string name="subscribe">Subscribe</string>
+    <string name="label_editTournament">Edit tournament</string>
+    <string name="label_save">Save</string>
     <string-array name="sports">
         <item>Football</item>
         <item>Handball</item>
@@ -29,8 +37,9 @@
 
 
     <!-- activity_view_tournament -->
-    <string name="label_start_tournament">Start tournament</string>
     <string name="label_delete_tournament">Delete tournament</string>
+    <string name="label_start_tournament">Start</string>
+    <string name="label_edit_tournament">Edit</string>
 
 
     <!-- fragment1_view_tournament -->

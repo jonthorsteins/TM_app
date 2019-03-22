@@ -15,22 +15,26 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.util.Date;
 import java.util.List;
 
 import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.model.Tournament;
 import hi.is.tournamentmanager.tm.model.TournamentLab;
+import hi.is.tournamentmanager.tm.model.User;
+
 
 public class ViewProfileActivity extends ListActivity {
 
     // private static
     private ListView mListView;
+    private User user = new User();
 
     private static final String EXTRA_MESSAGE = "is.hi.tournamentmanager.mainToAll";
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
     private List<Tournament> mTournaments;
+    private List<Tournament> mProfile;
+
     TextView mViewAll;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -75,7 +79,14 @@ public class ViewProfileActivity extends ListActivity {
         setContentView(R.layout.activity_view_profile);
         final Context ct = getApplicationContext();
 
+        TextView textElement = findViewById(R.id.username);
         mTournaments = TournamentLab.get(getApplicationContext()).getTournaments();
+        user.setUsername("admin"); // þarf að breyta
+        String username = (String) user.getUsername();
+        textElement.setText(username);
+
+
+
         TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
         setListAdapter(adapter);
 

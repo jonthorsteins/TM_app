@@ -27,44 +27,66 @@ import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
 import hi.is.tournamentmanager.tm.helpers.TokenStore;
 import hi.is.tournamentmanager.tm.model.User;
 
-public class LoginActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
 
     public static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
-
     private ProgressBar mLoading;
     SharedPreferences mSharedPreferences;
     private EditText mUsername;
     private EditText mPassword;
+    private EditText mPasswordAgain;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
 
         mSharedPreferences = getSharedPreferences(TOKEN_PREFERENCE, Context.MODE_PRIVATE);
-
-        final Button mSignInButton = (Button) findViewById(R.id.signUp_button);
-        final TextView mSignUpLink = (TextView) findViewById(R.id.signUp_link);
+        final Button mSignUpButton = (Button) findViewById(R.id.signUp_button);
         mLoading = (ProgressBar)findViewById(R.id.signIn_spinner);
         mUsername = (EditText) findViewById(R.id.username_text);
         mPassword = (EditText) findViewById(R.id.password_text);
+        mPasswordAgain = (EditText) findViewById(R.id.password_text_again);
+        final TextView mSignInLink = (TextView) findViewById(R.id.signIn_link);
 
-        mSignUpLink.setOnClickListener(new View.OnClickListener(){
+        mSignInLink.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
                 finish();
             }
         });
 
-        mSignInButton.setOnClickListener(new View.OnClickListener() {
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLoading.setVisibility(View.VISIBLE);
-                mSignInButton.setVisibility(View.GONE);
+                mSignUpButton.setVisibility(View.GONE);
                 String username = mUsername.getText().toString();
                 String password = mPassword.getText().toString();
-                System.out.println(username + ":" + password);
+                String passwordAgain = mPasswordAgain.getText().toString();
+                System.out.println(username + ":" + password + ":" + passwordAgain);
+
+                // Athugar hvort lykilorð stemma
+                if ( !password.equals(passwordAgain) ) {
+                    mLoading.setVisibility(View.GONE);
+                    mSignUpButton.setVisibility(View.VISIBLE);
+                    mPasswordAgain.setText("");
+                    mPassword.setText("");
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.custom_toast,
+                            (ViewGroup) findViewById(R.id.custom_toast_container));
+                    TextView text = (TextView) layout.findViewById(R.id.text);
+                    text.setText(R.string.signup_failed);
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setGravity(Gravity.BOTTOM, 0, 50);
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
+                    return;
+                }
+
                 // Set request body
                 JSONObject body = new JSONObject();
                 try {
@@ -74,40 +96,63 @@ public class LoginActivity extends AppCompatActivity {
                     e.printStackTrace();
                     return;
                 }
-                NetworkHandler.post("/login", body, "application/json", null, new JsonHttpResponseHandler() {
+                NetworkHandler.post("/signup", body, "application/json", null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         System.out.println(response.toString());
-                        try {
-                            TokenStore.storeToken(mSharedPreferences, response.get("token").toString());
-                            TokenStore.storeUser(mSharedPreferences, response.getJSONObject("user").getLong("id"));
-                            Intent intent = new Intent(LoginActivity.this, ViewAllTournamentsActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } catch (JSONException e) {
-                            Log.d("error", e.toString());
-                        }
+                        TokenStore.storeToken(mSharedPreferences,"");
+                        Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         mLoading.setVisibility(View.GONE);
-                        mSignInButton.setVisibility(View.VISIBLE);
+                        mSignUpButton.setVisibility(View.VISIBLE);
                         mPassword.setText("");
                         LayoutInflater inflater = getLayoutInflater();
                         View layout = inflater.inflate(R.layout.custom_toast,
                                 (ViewGroup) findViewById(R.id.custom_toast_container));
                         TextView text = (TextView) layout.findViewById(R.id.text);
-                        text.setText(R.string.login_failed);
+                        text.setText(R.string.signup_failed);
                         Toast toast = new Toast(getApplicationContext());
                         toast.setGravity(Gravity.BOTTOM, 0, 50);
                         toast.setDuration(Toast.LENGTH_LONG);
                         toast.setView(layout);
                         toast.show();
+                        validate();
                     }
                 });
             }
         });
+    }
 
+    public boolean validate() {
+        boolean valid = true;
+
+        if (mUsername.length() <= 3  || mUsername == null) {
+            mUsername.setError("at least 3 characters");
+            valid = false;
+        } else {
+            mUsername.setError(null);
+        }
+
+        if ( !mPassword.equals(mPasswordAgain) ) {
+            mPassword.setError("passwords do not match");
+            mPasswordAgain.setError("passwords do not match");
+            valid = false;
+        } else {
+            mPasswordAgain.setError(null);
+            mPassword.setError(null);
+        }
+
+        if( mPassword.length() <=  6) {
+            mPassword.setError("at least six characters");
+            valid = false;
+        } else {
+            mPassword.setError(null);
+        }
+        return valid;
     }
 }
