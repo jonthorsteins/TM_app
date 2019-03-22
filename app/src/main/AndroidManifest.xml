@@ -17,6 +17,10 @@
             android:label="@string/title_activity_view_tournament"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".ui.SignupActivity"
+            android:parentActivityName=".ui.LoginActivity"
+            android:launchMode="singleInstance"/>
+        <activity
             android:name=".ui.LoginActivity"
             android:noHistory="true" />
         <activity android:name=".ui.ViewProfileActivity" />
