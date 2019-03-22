@@ -120,6 +120,15 @@ public class ViewTournamentActivity extends AppCompatActivity {
                     startTourament();
                 }
             });
+
+            final Button mEditTournament = findViewById(R.id.btn_edit_tournament);
+            mEditTournament.setVisibility(View.VISIBLE);
+            mEditTournament.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editTournament();
+                }
+            });
         }
     }
 
@@ -143,6 +152,13 @@ public class ViewTournamentActivity extends AppCompatActivity {
                 System.out.println(errorResponse.toString());
             }
         });
+    }
+
+    private void editTournament() {
+        Intent i = new Intent(ViewTournamentActivity.this, EditTournamentActivity.class);
+        i.putExtra(TOURNAMENT_ITEM, t);
+        startActivity(i);
+        finish();
     }
 
     public class SectionsPageAdapter extends FragmentPagerAdapter {

@@ -33,15 +33,27 @@
                 android:text=""/>
 
             <Button
+                android:id="@+id/btn_edit_tournament"
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/label_edit_tournament"
+                android:textColor="@android:color/white"/>
+
+            <Button
                 android:id="@+id/btn_start_tournament"
                 android:visibility="gone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:background="@color/colorPrimary"
-                android:text="@string/label_start_tournament"
+                android:text="Start"
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>
