@@ -17,7 +17,7 @@ public class Tournament implements Serializable {
     private int nrOfRounds = 2;
     private List<Team> teams = new ArrayList<>();
     private List<Match> matches = new ArrayList<>();
-    private User user;
+    private Long userid;
     private Sport sport = Sport.Football;
     private boolean isPublic = true;
 
@@ -25,7 +25,7 @@ public class Tournament implements Serializable {
         this.uuid = UUID.randomUUID();
     }
 
-    public Tournament(User user) { this.user = user; }
+    public Tournament(Long userid) { this.userid = userid; }
 
     public Tournament(String name, Date signUpExpiration, int maxTeams, int nrOfRounds, boolean isPublic) {
         this.name = name;
@@ -82,8 +82,8 @@ public class Tournament implements Serializable {
     public List<Match> getMatches() { return matches; }
     public void setMatches(List<Match> matches) { this.matches = matches; }
 
-    public User getUser() { return this.user; }
-    public void setUser(User user) { this.user = user; }
+    public Long getUser() { return this.userid; }
+    public void setUser(Long user) { this.userid = user; }
 
     public Sport getSport() { return sport; }
     public void setSport(Sport sport) { this.sport = sport; }

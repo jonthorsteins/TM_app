@@ -32,6 +32,46 @@
                 android:textSize="28sp"
                 android:text=""/>
 
+            <ImageView
+                android:id="@+id/subscribe"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:maxWidth="40dp"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/subscribe"
+                android:onClick="subscribe"
+                android:src="@drawable/ic_star_border_orange_24dp"/>
+
+            <ImageView
+                android:id="@+id/unsubscribe"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:maxWidth="40dp"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/subscribe"
+                android:onClick="unsubscribe"
+                android:visibility="gone"
+                android:src="@drawable/ic_star_orange_24dp"/>
+            <ImageView
+                android:id="@+id/delete_tournament"
+                android:visibility="gone"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:onClick="deleteTournament"
+                android:src="@drawable/ic_delete_black_24dp"/>
+            <Button
+                android:id="@+id/btn_edit_tournament"
+                android:visibility="gone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/label_edit_tournament"
+                android:textColor="@android:color/white"/>
+
             <Button
                 android:id="@+id/btn_start_tournament"
                 android:visibility="gone"
@@ -39,10 +79,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="10dp"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:background="@color/colorPrimary"
-                android:text="@string/label_start_tournament"
+                android:text="Start"
                 android:textColor="@android:color/white"/>
+
+
 
         </LinearLayout>
 

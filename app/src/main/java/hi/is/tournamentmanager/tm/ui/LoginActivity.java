@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                         System.out.println(response.toString());
                         try {
                             TokenStore.storeToken(mSharedPreferences, response.get("token").toString());
+                            TokenStore.storeUser(mSharedPreferences, response.getJSONObject("user").getLong("id"));
                             Intent intent = new Intent(LoginActivity.this, ViewAllTournamentsActivity.class);
                             startActivity(intent);
                             finish();
