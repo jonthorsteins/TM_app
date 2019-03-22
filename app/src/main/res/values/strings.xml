@@ -23,6 +23,7 @@
     <string name="subscribe">Subscribe</string>
     <string name="label_editTournament">Edit tournament</string>
     <string name="label_save">Save</string>
+    <string name="label_search">Search</string>
     <string-array name="sports">
         <item>Football</item>
         <item>Handball</item>
@@ -37,7 +38,7 @@
 
 
     <!-- activity_view_tournament -->
-    <string name="label_delete_tournament">Delete tournament</string>
+    <string name="label_delete_tournament">Delete</string>
     <string name="label_start_tournament">Start</string>
     <string name="label_edit_tournament">Edit</string>
 

@@ -24,7 +24,7 @@
             android:name=".ui.LoginActivity"
             android:noHistory="true" />
         <activity android:name=".ui.ViewProfileActivity" />
-        <activity android:name=".ui.ViewAllTournamentsActivity" />
+        <activity android:name=".ui.ViewAllTournamentsActivity" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.EditTournamentActivity" />
         <activity android:name=".ui.EditMatchActivity" />
         <activity android:name=".ui.CreateTournamentActivity" android:windowSoftInputMode="adjustPan"/>

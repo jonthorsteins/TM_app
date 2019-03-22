@@ -106,9 +106,13 @@ public class ViewTournamentActivity extends AppCompatActivity {
             findViewById(R.id.unsubscribe).setVisibility(View.GONE);
             findViewById(R.id.subscribe).setVisibility(View.GONE);
             findViewById(R.id.delete_tournament).setVisibility(View.VISIBLE);
+            if(t.getMatches().size() == 0){
+                findViewById(R.id.edit_tournament).setVisibility(View.VISIBLE);
+                findViewById(R.id.start_tournament).setVisibility(View.VISIBLE);
+            }
         }
 
-        startTournamentButtonSetup(t);
+        //startTournamentButtonSetup(t);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -124,7 +128,7 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
     }
 
-    private void startTournamentButtonSetup(Tournament t) {
+ /*   private void startTournamentButtonSetup(Tournament t) {
         Long user = TokenStore.getUser(mSharedPreferences);
         if(TournamentLab.get(getApplicationContext()).isOwner(user) && t.getMatches().isEmpty()) {
                 final Button mStartTourament = findViewById(R.id.btn_start_tournament);
@@ -144,7 +148,7 @@ public class ViewTournamentActivity extends AppCompatActivity {
                 }
             });
         }
-    }
+    }*/
 
     public void deleteTournament(View view){
 
@@ -164,9 +168,20 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
-                        //NetworkHandler.delete("/tournaments/"+t.getId(), null, token, new JsonHttpResponseHandler(){
+                        NetworkHandler.delete("/tournaments/"+t.getId(), null, token, new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                System.out.println(response.toString());
+                                Intent i = new Intent(ViewTournamentActivity.this, ViewAllTournamentsActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
 
-                        //});
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                System.out.println(errorResponse.toString());
+                            }
+                        });
                     }
                 })
 
@@ -176,7 +191,7 @@ public class ViewTournamentActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void startTourament() {
+    public void startTournament(View view) {
         System.out.println("Start Tournament");
         String token = TokenStore.getToken(mSharedPreferences);
 
@@ -198,7 +213,7 @@ public class ViewTournamentActivity extends AppCompatActivity {
         });
     }
 
-    private void editTournament() {
+    public void editTournament(View view) {
         Intent i = new Intent(ViewTournamentActivity.this, EditTournamentActivity.class);
         i.putExtra(TOURNAMENT_ITEM, t);
         startActivity(i);
