@@ -20,6 +20,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -27,6 +30,7 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import hi.is.tournamentmanager.tm.R;
+import hi.is.tournamentmanager.tm.helpers.TokenStore;
 import hi.is.tournamentmanager.tm.model.Tournament;
 
 public class EditTournamentActivity extends AppCompatActivity {
@@ -179,7 +183,7 @@ public class EditTournamentActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                // Mögulega að verifya input eitthvað
+                saveTournament();
 
             }
         });
@@ -199,6 +203,26 @@ public class EditTournamentActivity extends AppCompatActivity {
     };
 
     private void saveTournament() {
+        String name = mName.getText().toString();
+        int maxTeams = Integer.parseInt("0"+mMaxTeams.getText().toString());
+        maxTeams = maxTeams == 0 ? 2 : maxTeams;
+
+        int rounds = Integer.parseInt("0"+ mRounds.getText().toString());
+        rounds = rounds == 0 ? 2 : rounds;
+
+        JSONObject body = new JSONObject();
+        try {
+            body.put("name", name);
+            body.put("signUpExpiration", isoSignUp);
+            body.put("teams", teams);
+            body.put("maxTeams", maxTeams);
+            body.put("rounds",rounds);
+            body.put("sport", mSport.getSelectedItemPosition());
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        String token = TokenStore.getToken(mSharedPreferences);
 
     }
 }

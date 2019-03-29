@@ -103,4 +103,13 @@ public class TournamentLab {
         }
         return false;
     }
+
+    public void replaceTournament(Tournament t) {
+        for (int i=0; i<mTournaments.size(); i++) {
+            if ( mTournaments.get(i).getId() == t.getId() ) {
+                mTournaments.set(i, t);
+                break;
+            }
+        }
+    }
 }

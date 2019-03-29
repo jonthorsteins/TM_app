@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,7 +18,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpHeaders;
 import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.helpers.Mapper;
 import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
@@ -46,7 +43,7 @@ import hi.is.tournamentmanager.tm.model.Team;
 import hi.is.tournamentmanager.tm.model.Tournament;
 import hi.is.tournamentmanager.tm.model.TournamentLab;
 
-public class ViewTournamentActivity extends AppCompatActivity {
+public class ViewTournamentActivity extends AppCompatActivity implements MatchesFrag.RequestUpdate {
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
     private static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
     private static final String USER_PREFERENCE = "USER_PREFERENCE";
@@ -54,6 +51,13 @@ public class ViewTournamentActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     Tournament t;
     SharedPreferences mSharedPreferences;
+
+    @Override
+    public void requestUpdate(Tournament t) {
+        // Get scoreboard fragment
+        ScoreboardFrag frag = (ScoreboardFrag) getSupportFragmentManager().getFragments().get(0);
+        frag.updateScoreboard(t);
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -257,9 +261,9 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
         //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        ViewTournamentFrag1 fragment1 = new ViewTournamentFrag1();
+        ScoreboardFrag fragment1 = new ScoreboardFrag();
         fragment1 = fragment1.newInstance(t.getUuid());
-        ViewTournamentFrag2 fragment2 = new ViewTournamentFrag2();
+        MatchesFrag fragment2 = new MatchesFrag();
         fragment2 = fragment2.newInstance(t.getUuid());
         adapter.addFragment(fragment1, "Scoreboard");
         adapter.addFragment(fragment2, "Matches");

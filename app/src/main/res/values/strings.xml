@@ -44,8 +44,7 @@
 
     <string name="no_tournaments">No tournaments</string>
 
-
-    <!-- fragment1_view_tournament -->
+    <!-- scoreboard_fragment -->
     <string name="header_team">Team</string>
     <string name="header_gamesPlayed">Games</string>
     <string name="header_goalsFor">For</string>
@@ -56,12 +55,14 @@
     Scoreboard is empty
 
 
-    <!-- fragment2_view_tournament -->
+    <!-- matches_fragment -->
     <string name="header_home">Home</string>
     <string name="header_away">Away</string>
     <string name="header_round">Round</string>
     <string name="header_played">Played</string>
     <string name="msg_no_matches">No matches exist</string>
+    <string name="toast_invalid_match_score">Error: Match score has to be non negative number</string>
+
 
 
 </resources>
