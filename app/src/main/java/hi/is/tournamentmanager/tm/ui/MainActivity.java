@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSharedPreferences = getSharedPreferences(TOKEN_PREFERENCE, Context.MODE_PRIVATE);
-        TokenStore.clearToken(mSharedPreferences); // Used to force login each time app is booted
         String token = TokenStore.getToken(mSharedPreferences);
 
         if (token.length() != 0) {

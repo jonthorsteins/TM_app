@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +33,9 @@ public class TournamentLab {
     public void setTournaments(List<Tournament> tournamentList) {
         mTournaments = tournamentList;
     }
-    public void setMyTournaments(List<Tournament> tournamentList) { mMyTournaments = tournamentList; }
+    public void setMyTournaments(List<Tournament> tournamentList) {
+        mMyTournaments = tournamentList;
+    }
     public void setSubscriptions(List<Tournament> tournamentList) { mSubscriptions = tournamentList; }
 
     private TournamentLab(Context context) {
@@ -43,15 +46,32 @@ public class TournamentLab {
         return mTournaments;
     }
     public List<Tournament> getMyTournaments() {
-        return mMyTournaments;
+        List<Tournament> list = new ArrayList<>();
+        for(Tournament t : mMyTournaments)
+            list.add(getTournament(t.getId()));
+        return list;
     }
     public List<Tournament> getSubscriptions() {
-        return mSubscriptions;
+        List<Tournament> list = new ArrayList<>();
+        for(Tournament t : mSubscriptions)
+            list.add(getTournament(t.getId()));
+        return list;
     }
 
     public Tournament getTournament(UUID id) {
         for (Tournament t : mTournaments) {
             if (t.getUuid().equals(id)) {
+                return t;
+            }
+        }
+
+        System.out.println("Fjöldi tournamenta: " + mTournaments.size());
+        return null;
+    }
+
+    public Tournament getTournament(Long id) {
+        for (Tournament t : mTournaments) {
+            if (t.getId() == id) {
                 return t;
             }
         }
@@ -98,5 +118,14 @@ public class TournamentLab {
             if(t.getUser() == id) return true;
         }
         return false;
+    }
+
+    public void replaceTournament(Tournament t) {
+        for (int i=0; i<mTournaments.size(); i++) {
+            if ( mTournaments.get(i).getId() == t.getId() ) {
+                mTournaments.set(i, t);
+                break;
+            }
+        }
     }
 }

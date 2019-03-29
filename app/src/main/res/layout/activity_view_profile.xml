@@ -1,66 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ViewProfileActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.ViewTournamentActivity">
 
-<LinearLayout
-        android:layout_width="419dp"
-        android:layout_height="744dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/textView3"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="My Tournaments"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:background="@android:color/white"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView"
+            <TextView
+                android:id="@+id/username_profile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="28sp" />
+
+            <ImageView
+                android:id="@+id/logout"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/label_start_tournament"
+                android:onClick="startTournament"
+                android:src="@drawable/ic_exit_to_app_red_24dp"/>
+
+        </LinearLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableBottom="@drawable/ic_account_circle_black_24dp"
-            android:fontFamily="sans-serif"
-            android:text="Username "
-            android:textAlignment="center"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content"/>
 
-        <View
-            style="@style/Divider" />
+    </android.support.design.widget.AppBarLayout>
 
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="395dp"
-            android:layout_height="462dp"
-            android:choiceMode="singleChoice"
-            android:clickable="true"
-            android:dividerHeight="1dp" />
-
-    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/colorPrimary"
         android:foreground="?attr/selectableItemBackground"
+        android:layout_gravity="bottom"
         app:itemBackground="@color/colorPrimary"
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navigation_menu" />
 
 
-</android.support.constraint.ConstraintLayout>
+
+</android.support.design.widget.CoordinatorLayout>

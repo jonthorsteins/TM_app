@@ -4,7 +4,8 @@ import android.content.SharedPreferences;
 
 public class TokenStore {
     private final static String TOKEN = "TOKEN";
-    private final static String USER = "USER";
+    private final static String USER_ID = "USER_ID";
+    private final static String USERNAME = "USER_NAME";
 
     public static String getToken(SharedPreferences sharedPreferences) {
         return sharedPreferences.getString(TOKEN,"");
@@ -22,19 +23,24 @@ public class TokenStore {
         editor.apply();
     }
 
-    public static Long getUser(SharedPreferences sharedPreferences){
-        return sharedPreferences.getLong(USER, -1);
+    public static Long getUserId(SharedPreferences sharedPreferences){
+        return sharedPreferences.getLong(USER_ID, -1);
     }
 
-    public static void storeUser(SharedPreferences sharedPreferences, Long user) {
+    public static String getUserName(SharedPreferences sharedPreferences){
+        return sharedPreferences.getString(USERNAME, "");
+    }
+
+    public static void storeUser(SharedPreferences sharedPreferences, Long user_id, String username) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(USER, user);
+        editor.putLong(USER_ID, user_id);
+        editor.putString(USERNAME, username);
         editor.apply();
     }
 
     public static void clearUser(SharedPreferences sharedPreferences) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(USER);
+        editor.remove(USER_ID);
         editor.apply();
     }
 }

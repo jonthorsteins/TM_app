@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
         android:id="@+id/home"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:padding="10dp"
         android:textSize="18sp"
+        android:textAlignment="center"
+        android:text=""/>
+
+    <TextView
+        android:id="@+id/homeScore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:text=""/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:text="-"/>
+
+    <TextView
+        android:id="@+id/awayScore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="14sp"
         android:textAlignment="center"
         android:text=""/>
 
@@ -17,7 +44,7 @@
         android:id="@+id/away"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:textSize="18sp"
         android:textAlignment="center"
         android:text=""/>
@@ -26,19 +53,19 @@
         android:id="@+id/round"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:textSize="18sp"
         android:textAlignment="center"
         android:text=""/>
 
-    <TextView
-        android:id="@+id/played"
-        android:layout_width="0dp"
+
+    <ImageButton
+        android:id="@+id/btn_editMatch"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        android:text=""/>
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:background="@drawable/ic_edit_gray_24dp"/>
 
 
 </LinearLayout>
