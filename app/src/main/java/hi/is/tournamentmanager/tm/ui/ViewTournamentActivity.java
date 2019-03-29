@@ -105,7 +105,7 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
             findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
         }
 
-        Long user = TokenStore.getUser(mSharedPreferences);
+        Long user = TokenStore.getUserId(mSharedPreferences);
         if(TournamentLab.get(getApplicationContext()).isOwner(user)){
             findViewById(R.id.unsubscribe).setVisibility(View.GONE);
             findViewById(R.id.subscribe).setVisibility(View.GONE);
