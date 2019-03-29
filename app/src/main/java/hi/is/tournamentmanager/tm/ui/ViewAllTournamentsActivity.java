@@ -8,12 +8,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,8 +27,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import cz.msebera.android.httpclient.Header;
 import hi.is.tournamentmanager.tm.R;
@@ -139,6 +146,45 @@ public class ViewAllTournamentsActivity extends ListActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        final EditText mSearch = findViewById(R.id.input_name);
+
+        mSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                List<Tournament> search = new ArrayList<Tournament>();
+                if(mSearch.getText().toString().equals("")){
+                    search = mTournaments;
+                    final Context ct = getApplicationContext();
+                    TournamentLab.get(getApplicationContext()).setTournaments(search);
+
+                    TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, search);
+                    setListAdapter(adapter);
+                    return;
+                }
+                for(int i = 0; i < mTournaments.size(); i++){
+                    if(mTournaments.get(i).getName().toLowerCase().indexOf(mSearch.getText().toString().toLowerCase()) == 0){
+                        search.add(mTournaments.get(i));
+                    }
+                }
+                final Context ct = getApplicationContext();
+                TournamentLab.get(getApplicationContext()).setTournaments(search);
+
+                TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, search);
+                setListAdapter(adapter);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
@@ -151,6 +197,9 @@ public class ViewAllTournamentsActivity extends ListActivity {
             intent.putExtra(TOURNAMENT_ITEM, mTournaments.get(position));
             startActivity(intent);
     }
+
+
+
 
     public class TournamentArrayAdapter extends ArrayAdapter<Tournament>  {
         private final Context context;

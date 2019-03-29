@@ -79,11 +79,11 @@ public class ViewProfileActivity extends ListActivity {
         setContentView(R.layout.activity_view_profile);
         final Context ct = getApplicationContext();
 
-        TextView textElement = findViewById(R.id.username);
+        //TextView textElement = findViewById(R.id.username);
         mTournaments = TournamentLab.get(getApplicationContext()).getTournaments();
         user.setUsername("admin"); // þarf að breyta
         String username = (String) user.getUsername();
-        textElement.setText(username);
+        //textElement.setText(username);
 
 
 
