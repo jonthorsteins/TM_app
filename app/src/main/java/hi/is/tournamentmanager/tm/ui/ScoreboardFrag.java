@@ -26,14 +26,17 @@ import hi.is.tournamentmanager.tm.model.Tournament;
 import hi.is.tournamentmanager.tm.model.TournamentLab;
 
 
-public class ViewTournamentFrag1 extends Fragment {
-    private static final String TAG = "ViewTournamentFrag1";
+public class ScoreboardFrag extends Fragment {
+    private static final String TAG = "ScoreboardFrag";
     private static final String TOURNAMENT_KEY = "tournament_key";
     private Tournament mTournament;
+    private List<ScoreboardItem> mScoreboard;
+    private ScoreboardArrayAdapter mAdapter;
+    private UUID tournamentId;
 
-    public static ViewTournamentFrag1 newInstance(UUID tournamentId) {
+    public static ScoreboardFrag newInstance(UUID tournamentId) {
 
-        ViewTournamentFrag1 fragment = new ViewTournamentFrag1();
+        ScoreboardFrag fragment = new ScoreboardFrag();
         Bundle bundle = new Bundle();
         bundle.putSerializable(TOURNAMENT_KEY, tournamentId);
         fragment.setArguments(bundle);
@@ -45,24 +48,24 @@ public class ViewTournamentFrag1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment1_view_tournament,container,false);
+        View view = inflater.inflate(R.layout.scoreboard_fragment,container,false);
         ListView listView = (ListView) view.findViewById(R.id.list);
 
 
         Bundle args = getArguments();
         System.out.println(TOURNAMENT_KEY);
-        UUID tournamentId = (UUID) args.getSerializable(TOURNAMENT_KEY);
+        tournamentId = (UUID) args.getSerializable(TOURNAMENT_KEY);
         mTournament = TournamentLab.get(getActivity()).getTournament(tournamentId);
-        List<ScoreboardItem> scoreboard = generateScoreboard(mTournament);
+        mScoreboard = generateScoreboard(mTournament);
 
-        if (scoreboard.isEmpty()) {
+        if (mScoreboard.isEmpty()) {
             view.findViewById(R.id.empty).setVisibility(View.VISIBLE);
         } else if (mTournament.getTeams().isEmpty()) {
             view.findViewById(R.id.noTeams).setVisibility(View.VISIBLE);
         } else {
             final Context ct = getActivity();
-            ScoreboardArrayAdapter adapter = new ScoreboardArrayAdapter(ct, scoreboard);
-            listView.setAdapter(adapter);
+            mAdapter = new ScoreboardArrayAdapter(ct, mScoreboard);
+            listView.setAdapter(mAdapter);
         }
 
         return view;
@@ -183,5 +186,11 @@ public class ViewTournamentFrag1 extends Fragment {
         }
         Collections.sort(scoreboard, Collections.reverseOrder());
         return scoreboard;
+    }
+
+    public void updateScoreboard(Tournament t) {
+        mScoreboard = generateScoreboard(t);
+        mAdapter.clear();
+        mAdapter.addAll(mScoreboard);
     }
 }

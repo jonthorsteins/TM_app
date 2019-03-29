@@ -35,7 +35,7 @@
             android:layout_marginBottom="20dp"/>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableBottom="@drawable/ic_account_circle_black_24dp"
