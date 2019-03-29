@@ -42,6 +42,22 @@ public class NetworkHandler {
         client.post(null, getAbsoluteUrl(url), body, type, responseHandler);
     }
 
+    public static void patch(String url, JSONObject data, String type, String token, AsyncHttpResponseHandler responseHandler) {
+        StringEntity body = null;
+        try {
+            body = new StringEntity(data.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return;
+        }
+        body.setContentType(new BasicHeader(HttpHeaders.CONTENT_TYPE, type));
+        System.out.print(token);
+        client.setAuthenticationPreemptive(true);
+        if(token != null)
+            client.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        client.patch(null, getAbsoluteUrl(url), body, type, responseHandler);
+    }
+
     private static String getAbsoluteUrl(String relativeUrl) {
         System.out.print("Request at: " + BASE_URL + relativeUrl);
         return BASE_URL + relativeUrl;
