@@ -35,6 +35,31 @@ public class Mapper {
         return tournaments;
     }
 
+    public static List<Tournament> mapToSubscriptions(JSONArray json){
+        List<Tournament> tournaments = new ArrayList<>();
+        for (int i = 0; i < json.length(); i++) {
+            try {
+                JSONObject d = json.getJSONObject(i);
+                Tournament t = new Tournament();
+                t = new Tournament();
+                t.setName(d.getString("name"));
+                t.setId(d.getLong("id"));
+                t.setIsPublic(d.getBoolean("public"));
+                t.setUser(d.getLong("userid"));
+                Date signup = null;
+                String dtStart = "2010-10-15T09:27:37Z";
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+                if(d.get("signupexpiration") != JSONObject.NULL)
+                    signup = format.parse(d.getString("signupexpiration"));
+                t.setSignUpExpiration(signup);
+                tournaments.add(t);
+            } catch (Exception e) {
+                Log.e("Mapper", e.toString());
+            }
+        }
+        return tournaments;
+    }
+
     public static Tournament mapToTournament(JSONObject json){
         Tournament t;
         try{
@@ -45,7 +70,7 @@ public class Mapper {
             Date signup = null;
             if(json.get("signupexpiration") != JSONObject.NULL)
                 signup = format.parse(json.getString("signupexpiration"));
-            String owner = json.getString("userid");
+            Long owner = json.getLong("userid");
             int maxTeams = json.getInt("maxteams");
             int rounds = json.getInt("rounds");
             long id = json.getLong("id");
@@ -64,6 +89,7 @@ public class Mapper {
             t.setTeams(teams);
             t.setMatches(matches);
             t.setSport(sport);
+            t.setUser(owner);
         } catch (Exception e) {
             t = null;
             Log.e("Mapper", e.toString());

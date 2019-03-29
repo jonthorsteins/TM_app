@@ -1,6 +1,8 @@
 package hi.is.tournamentmanager.tm.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -46,6 +49,7 @@ import hi.is.tournamentmanager.tm.model.TournamentLab;
 public class ViewTournamentActivity extends AppCompatActivity {
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
     private static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
+    private static final String USER_PREFERENCE = "USER_PREFERENCE";
 
     private static final String TAG = "MainActivity";
     Tournament t;
@@ -92,8 +96,23 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
         TextView textView  = findViewById(R.id.view_tournament_name);
         textView.setText(t.getName());
+        if(TournamentLab.get(getApplicationContext()).isSubscribed(t.getId())) {
+            findViewById(R.id.subscribe).setVisibility(View.GONE);
+            findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
+        }
 
-        startTournamentButtonSetup(t);
+        Long user = TokenStore.getUser(mSharedPreferences);
+        if(TournamentLab.get(getApplicationContext()).isOwner(user)){
+            findViewById(R.id.unsubscribe).setVisibility(View.GONE);
+            findViewById(R.id.subscribe).setVisibility(View.GONE);
+            findViewById(R.id.delete_tournament).setVisibility(View.VISIBLE);
+            if(t.getMatches().size() == 0){
+                findViewById(R.id.edit_tournament).setVisibility(View.VISIBLE);
+                findViewById(R.id.start_tournament).setVisibility(View.VISIBLE);
+            }
+        }
+
+        //startTournamentButtonSetup(t);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -109,21 +128,70 @@ public class ViewTournamentActivity extends AppCompatActivity {
 
     }
 
-    private void startTournamentButtonSetup(Tournament t) {
-        boolean isOwner = true;
-        if (isOwner && t.getMatches().isEmpty()) {
-            final Button mStartTourament = findViewById(R.id.btn_start_tournament);
-            mStartTourament.setVisibility(View.VISIBLE);
-            mStartTourament.setOnClickListener(new View.OnClickListener() {
+ /*   private void startTournamentButtonSetup(Tournament t) {
+        Long user = TokenStore.getUser(mSharedPreferences);
+        if(TournamentLab.get(getApplicationContext()).isOwner(user) && t.getMatches().isEmpty()) {
+                final Button mStartTourament = findViewById(R.id.btn_start_tournament);
+                mStartTourament.setVisibility(View.VISIBLE);
+                mStartTourament.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startTourament();
+                    }
+                });
+            final Button mEditTournament = findViewById(R.id.btn_edit_tournament);
+            mEditTournament.setVisibility(View.VISIBLE);
+            mEditTournament.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startTourament();
+                    editTournament();
                 }
             });
         }
+    }*/
+
+    public void deleteTournament(View view){
+
+        new AlertDialog.Builder(this)
+                .setTitle("Delete tournament")
+                .setMessage("Are you sure you want to delete this tournament?")
+
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
+                        String token = TokenStore.getToken(mSharedPreferences);
+                        Context context = getApplicationContext();
+                        CharSequence text = "Delete tournament";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                        NetworkHandler.delete("/tournaments/"+t.getId(), null, token, new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                System.out.println(response.toString());
+                                Intent i = new Intent(ViewTournamentActivity.this, ViewAllTournamentsActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                System.out.println(errorResponse.toString());
+                            }
+                        });
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
-    private void startTourament() {
+    public void startTournament(View view) {
         System.out.println("Start Tournament");
         String token = TokenStore.getToken(mSharedPreferences);
 
@@ -143,6 +211,13 @@ public class ViewTournamentActivity extends AppCompatActivity {
                 System.out.println(errorResponse.toString());
             }
         });
+    }
+
+    public void editTournament(View view) {
+        Intent i = new Intent(ViewTournamentActivity.this, EditTournamentActivity.class);
+        i.putExtra(TOURNAMENT_ITEM, t);
+        startActivity(i);
+        finish();
     }
 
     public class SectionsPageAdapter extends FragmentPagerAdapter {
@@ -269,5 +344,61 @@ public class ViewTournamentActivity extends AppCompatActivity {
         }
         Collections.sort(scoreboard, Collections.reverseOrder());
         return scoreboard;
+    }
+
+    public void subscribe(View view){
+
+        String token = TokenStore.getToken(mSharedPreferences);
+        NetworkHandler.post("/tournaments/"+t.getId()+"/sub", new JSONObject(),"application/json", token, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Context context = getApplicationContext();
+                CharSequence text = "Subscribed success!";
+                int duration = Toast.LENGTH_SHORT;
+                findViewById(R.id.subscribe).setVisibility(View.GONE);
+                findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
+                (TournamentLab.get(getApplicationContext())).addSubscription(t);
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Context context = getApplicationContext();
+                CharSequence text = "Subscribed failed!";
+                int duration = Toast.LENGTH_SHORT;
+
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
+    }
+
+    public void unsubscribe(View view){
+        String token = TokenStore.getToken(mSharedPreferences);
+        NetworkHandler.delete("/tournaments/"+t.getId()+"/sub",null, token, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Context context = getApplicationContext();
+                CharSequence text = "Unsubscribed success!";
+                int duration = Toast.LENGTH_SHORT;
+                findViewById(R.id.subscribe).setVisibility(View.VISIBLE);
+                findViewById(R.id.unsubscribe).setVisibility(View.GONE);
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Context context = getApplicationContext();
+                CharSequence text = "Unsubscribed failed!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
     }
 }

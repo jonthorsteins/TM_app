@@ -32,17 +32,55 @@
                 android:textSize="28sp"
                 android:text=""/>
 
-            <Button
-                android:id="@+id/btn_start_tournament"
+            <ImageView
+                android:id="@+id/subscribe"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:maxWidth="40dp"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/subscribe"
+                android:onClick="subscribe"
+                android:src="@drawable/ic_star_border_orange_24dp"/>
+
+            <ImageView
+                android:id="@+id/unsubscribe"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:maxWidth="40dp"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/subscribe"
+                android:onClick="unsubscribe"
                 android:visibility="gone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="10dp"
-                android:padding="10dp"
-                android:background="@color/colorPrimary"
-                android:text="@string/label_start_tournament"
-                android:textColor="@android:color/white"/>
+                android:src="@drawable/ic_star_orange_24dp"/>
+            <ImageView
+                android:id="@+id/delete_tournament"
+                android:visibility="gone"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/label_delete_tournament"
+                android:onClick="deleteTournament"
+                android:src="@drawable/ic_delete_black_24dp"/>
+            <ImageView
+                android:id="@+id/edit_tournament"
+                android:visibility="gone"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/label_editTournament"
+                android:onClick="editTournament"
+                android:src="@drawable/ic_edit_black_24dp"/>
+            <ImageView
+                android:id="@+id/start_tournament"
+                android:visibility="gone"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/label_start_tournament"
+                android:onClick="startTournament"
+                android:src="@drawable/ic_play_arrow_black_24dp"/>
+
+
 
         </LinearLayout>
 
@@ -62,9 +100,9 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/colorPrimary"
         android:foreground="?attr/selectableItemBackground"
         android:layout_gravity="bottom"
         app:itemBackground="@color/colorPrimary"

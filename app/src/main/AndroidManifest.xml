@@ -17,13 +17,17 @@
             android:label="@string/title_activity_view_tournament"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".ui.SignupActivity"
+            android:parentActivityName=".ui.LoginActivity"
+            android:launchMode="singleInstance"/>
+        <activity
             android:name=".ui.LoginActivity"
             android:noHistory="true" />
         <activity android:name=".ui.ViewProfileActivity" />
-        <activity android:name=".ui.ViewAllTournamentsActivity" />
+        <activity android:name=".ui.ViewAllTournamentsActivity" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.EditTournamentActivity" />
         <activity android:name=".ui.EditMatchActivity" />
-        <activity android:name=".ui.CreateTournamentActivity" />
+        <activity android:name=".ui.CreateTournamentActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

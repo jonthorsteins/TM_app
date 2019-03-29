@@ -8,17 +8,23 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -36,6 +42,7 @@ import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.helpers.Mapper;
 import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
 import hi.is.tournamentmanager.tm.helpers.TokenStore;
+import hi.is.tournamentmanager.tm.model.Team;
 import hi.is.tournamentmanager.tm.model.Tournament;
 import hi.is.tournamentmanager.tm.model.TournamentLab;
 
@@ -90,6 +97,10 @@ public class CreateTournamentActivity extends AppCompatActivity {
     List<String> teams = new ArrayList<>();
     ArrayAdapter<String> mAdapter;
     String isoSignUp = null;
+    RecyclerView listingsView;
+    TeamAdapter adapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,11 +119,12 @@ public class CreateTournamentActivity extends AppCompatActivity {
         mDatePicker = findViewById(R.id.signUp_picker);
         mAddTeam = findViewById(R.id.btn_addTeam);
         mTeamName = findViewById(R.id.input_team_name);
-        mTeamsList = findViewById(R.id.teams_list);
+        //mTeamsList = findViewById(R.id.teams_list);
         mEmptyList = findViewById(R.id.teams_list_empty);
-        mAdapter = new ArrayAdapter<String>(this, R.layout.addteam_list_row, R.id.item_team_name, teams);
-        mTeamsList.setAdapter(mAdapter);
+        //mAdapter = new ArrayAdapter<String>(this, R.layout.addteam_list_row, R.id.item_team_name, teams);
+        //mTeamsList.setAdapter(mAdapter);
         mSport = findViewById(R.id.input_sport);
+        listingsView = findViewById(R.id.listings_view);
         Calendar cal = Calendar.getInstance(TimeZone.getDefault()); // Get current date
 
         mDatePicker.init(cal.get(Calendar.YEAR),
@@ -135,6 +147,46 @@ public class CreateTournamentActivity extends AppCompatActivity {
                 mDatePicker.setVisibility(View.VISIBLE);
             }
         });
+
+
+        // 3. Initialize the Bakery adapter... unchanged.
+        adapter = new TeamAdapter(this, R.layout.addteam_list_row, teams);
+
+        // 4. Initialize ItemAnimator, LayoutManager and ItemDecorators
+
+        // 5. Setup our RecyclerView
+        listingsView = (RecyclerView)findViewById(R.id.listings_view);
+
+        // 6. For performance, tell OS RecyclerView won't change size
+
+        // 7. Set the LayoutManager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        listingsView.setLayoutManager(layoutManager);
+
+        // 8. Set the ItemDecorators
+
+        // 9. Attach the adapter to RecyclerView
+        listingsView.setAdapter(adapter);
+
+        /*mTeamsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                System.out.println("Clicked: " + arg3);
+                teams.remove((int)arg3);
+                mAdapter.notifyDataSetChanged();
+                if(teams.size() == 0) mEmptyList.setVisibility(View.VISIBLE);
+            }
+        });*/
+
+        mCreate.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                // Mögulega að verifya input eitthvað
+                createTournament();
+            }
+        });
+
         mAddTeam.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -145,27 +197,8 @@ public class CreateTournamentActivity extends AppCompatActivity {
                     mTeamName.setText("");
                     teams.add(input);
                     mEmptyList.setVisibility(View.GONE);
-                    mAdapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 }
-            }
-        });
-
-        mTeamsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                System.out.println("Clicked: " + arg3);
-                teams.remove((int)arg3);
-                mAdapter.notifyDataSetChanged();
-                if(teams.size() == 0) mEmptyList.setVisibility(View.VISIBLE);
-            }
-        });
-
-        mCreate.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                // Mögulega að verifya input eitthvað
-                createTournament();
             }
         });
     }
@@ -225,6 +258,81 @@ public class CreateTournamentActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public class TeamHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        TextView teamName;
+        ImageView removeTeam;
+        String t;
+        int position;
+
+        Context context;
+
+        public TeamHolder(Context context, @NonNull View itemView) {
+            super(itemView);
+
+            this.context = context;
+            this.teamName = itemView.findViewById(R.id.item_team_name);
+            this.removeTeam = itemView.findViewById(R.id.team_remove);
+
+            itemView.setOnClickListener(this);
+        }
+
+        public void bindTeam(String team, int position){
+            this.t = team;
+            this.position = position;
+            teamName.setText(team);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (this.t != null) {
+                teams.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    public class TeamAdapter extends RecyclerView.Adapter<TeamHolder> {
+        private final List<String> teams;
+        private Context context;
+        private int itemResource;
+
+        public TeamAdapter(Context context, int itemResource, List<String> teams) {
+
+            // 1. Initialize our adapter
+            this.teams = teams;
+            this.context = context;
+            this.itemResource = itemResource;
+        }
+
+        // 2. Override the onCreateViewHolder method
+        @Override
+        public TeamHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            // 3. Inflate the view and return the new ViewHolder
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(this.itemResource, parent, false);
+            return new TeamHolder(this.context, view);
+        }
+
+        // 4. Override the onBindViewHolder method
+        @Override
+        public void onBindViewHolder(TeamHolder holder, int position) {
+
+            // 5. Use position to access the correct Bakery object
+            String team = this.teams.get(position);
+
+            // 6. Bind the bakery object to the holder
+            holder.bindTeam(team, position);
+        }
+
+        @Override
+        public int getItemCount() {
+
+            return this.teams.size();
+        }
     }
 
 }

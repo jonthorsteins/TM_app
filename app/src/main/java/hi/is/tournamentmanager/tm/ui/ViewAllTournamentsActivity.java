@@ -3,6 +3,7 @@ package hi.is.tournamentmanager.tm.ui;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +31,7 @@ import cz.msebera.android.httpclient.Header;
 import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.helpers.Mapper;
 import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
+import hi.is.tournamentmanager.tm.helpers.TokenStore;
 import hi.is.tournamentmanager.tm.model.Tournament;
 import hi.is.tournamentmanager.tm.model.TournamentLab;
 
@@ -37,10 +39,12 @@ public class ViewAllTournamentsActivity extends ListActivity {
 
     // private static
     private ListView mListView;
+    private static final String TOKEN_PREFERENCE = "TOKEN_PREFERENCE";
 
     private static final String EXTRA_MESSAGE = "is.hi.tournamentmanager.mainToAll";
     private static final String TOURNAMENT_ITEM = "TOURNAMENT_ITEM";
     private List<Tournament> mTournaments;
+    SharedPreferences mSharedPreferences;
     TextView mViewAll;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -83,11 +87,14 @@ public class ViewAllTournamentsActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_all_tournaments);
+        mSharedPreferences = getSharedPreferences(TOKEN_PREFERENCE, Context.MODE_PRIVATE);
+
         final Context ct = getApplicationContext();
 
         TournamentLab.get(ct);
+        String token = TokenStore.getToken(mSharedPreferences);
 
-        NetworkHandler.get("/tournaments",  null, new JsonHttpResponseHandler() {
+        NetworkHandler.get("/tournaments",  null, token, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 System.out.println(response.toString());
@@ -112,6 +119,21 @@ public class ViewAllTournamentsActivity extends ListActivity {
 
                 TournamentArrayAdapter adapter = new TournamentArrayAdapter(ct, mTournaments);
                 setListAdapter(adapter);
+            }
+        });
+        NetworkHandler.get("/profile", null, token, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                System.out.println(response.toString());
+                try{
+                    List<Tournament> mt = Mapper.mapToTournamentList(response.getJSONArray("tournaments"));
+
+                    TournamentLab.get(getApplicationContext()).setMyTournaments(mt);
+                    List<Tournament> st = Mapper.mapToSubscriptions(response.getJSONArray("subscriptions"));
+                    TournamentLab.get(getApplicationContext()).setSubscriptions(st);
+                } catch (JSONException e){
+                    Log.e("Mapper", e.toString());
+                }
             }
         });
 
