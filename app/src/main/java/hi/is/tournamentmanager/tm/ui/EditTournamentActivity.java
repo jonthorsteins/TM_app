@@ -19,6 +19,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import java.util.Date;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,9 +32,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import cz.msebera.android.httpclient.Header;
 import hi.is.tournamentmanager.tm.R;
+import hi.is.tournamentmanager.tm.helpers.Mapper;
+import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
 import hi.is.tournamentmanager.tm.helpers.TokenStore;
+import hi.is.tournamentmanager.tm.model.Sport;
 import hi.is.tournamentmanager.tm.model.Tournament;
+import hi.is.tournamentmanager.tm.model.TournamentLab;
+import hi.is.tournamentmanager.tm.model.Team;
 
 public class EditTournamentActivity extends AppCompatActivity {
 
@@ -86,6 +95,7 @@ public class EditTournamentActivity extends AppCompatActivity {
     List<String> teams = new ArrayList<>();
     ArrayAdapter<String> mAdapter;
     String isoSignUp = null;
+    Date su = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +125,7 @@ public class EditTournamentActivity extends AppCompatActivity {
         mName.setText(t.getName(), TextView.BufferType.EDITABLE);
         mMaxTeams.setText(Integer.toString(t.getMaxTeams()), TextView.BufferType.EDITABLE);
         mRounds.setText(Integer.toString(t.getNrOfRounds()), TextView.BufferType.EDITABLE);
+
 
         for(int i = 0; i < t.getTeams().size(); i++) {
             teams.add(t.getTeams().get(i).getName());
@@ -222,7 +233,32 @@ public class EditTournamentActivity extends AppCompatActivity {
             e.printStackTrace();
             return;
         }
+
+        t.setName(name);
+        t.setMaxTeams(maxTeams);
+        t.setNrOfRounds(rounds);
+        t.setSport(Sport.values()[mSport.getSelectedItemPosition()]);
+        //TODO
+        // Uppfæra signupExp og teams fyrir mótið í TournamentLab
+
         String token = TokenStore.getToken(mSharedPreferences);
 
+        NetworkHandler.patch("/tournaments/"+t.getId()+"/edit", body,"application/json", token, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                System.out.println(response.toString());
+                TournamentLab tl = TournamentLab.get(getApplicationContext());
+                Tournament tt = tl.editTournament(t);
+                Intent intent = new Intent(EditTournamentActivity.this, ViewTournamentActivity.class);
+                intent.putExtra(TOURNAMENT_ITEM, tt);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                System.out.println(errorResponse.toString());
+            }
+        });
     }
 }

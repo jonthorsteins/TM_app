@@ -70,6 +70,22 @@ public class TournamentLab {
         mMyTournaments.add(tournament);
     }
 
+    public Tournament editTournament(Tournament tournament) {
+        Tournament tt = new Tournament();
+        for(Tournament t : mTournaments){
+            if(t.getId() == tournament.getId()){
+                t.setMaxTeams(tournament.getMaxTeams());
+                t.setName(tournament.getName());
+                t.setSignUpExpiration(tournament.getSignUpExpiration());
+                t.setNrOfRounds(tournament.getNrOfRounds());
+                t.setTeams(tournament.getTeams());
+                t.setSport(tournament.getSport());
+                tt = t;
+            }
+        }
+        return tt;
+    }
+
     public boolean isSubscribed(long id) {
         for(Tournament t: mSubscriptions){
             if(t.getId() == id) return true;
