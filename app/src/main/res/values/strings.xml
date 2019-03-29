@@ -42,6 +42,8 @@
     <string name="label_start_tournament">Start</string>
     <string name="label_edit_tournament">Edit</string>
 
+    <string name="no_tournaments">No tournaments</string>
+
 
     <!-- fragment1_view_tournament -->
     <string name="header_team">Team</string>

@@ -126,7 +126,7 @@ public class ViewAllTournamentsActivity extends ListActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 System.out.println(response.toString());
                 try{
-                    List<Tournament> mt = Mapper.mapToTournamentList(response.getJSONArray("tournaments"));
+                    List<Tournament> mt = Mapper.mapToSubscriptions(response.getJSONArray("tournaments"));
 
                     TournamentLab.get(getApplicationContext()).setMyTournaments(mt);
                     List<Tournament> st = Mapper.mapToSubscriptions(response.getJSONArray("subscriptions"));
@@ -179,7 +179,7 @@ public class ViewAllTournamentsActivity extends ListActivity {
                 textView.setText("Started");
                 textView.setTextColor(Color.parseColor("#000000"));
             } else if (t.getSignUpExpiration() == null ||
-                       t.getSignUpExpiration().compareTo(currentDate) < 0) {
+                       t.getSignUpExpiration().compareTo(currentDate) >= 0) {
                 textView.setText("Open");
                 textView.setTextColor(Color.parseColor("#00FF00"));
             } else {
