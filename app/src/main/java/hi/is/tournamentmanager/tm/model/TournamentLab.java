@@ -76,6 +76,24 @@ public class TournamentLab {
         mMyTournaments.add(tournament);
     }
 
+    public void removeSubscription(Tournament tournament) {
+        for (int i=0; i<mSubscriptions.size(); i++ ) {
+            if (tournament.getId() == mSubscriptions.get(i).getId() ) {
+                mSubscriptions.remove(i);
+                return;
+            }
+        }
+    }
+
+    public void removeMyTournament(Tournament tournament) {
+        for (int i=0; i<mMyTournaments.size(); i++ ) {
+            if (tournament.getId() == mMyTournaments.get(i).getId() ) {
+                mMyTournaments.remove(i);
+                return;
+            }
+        }
+    }
+
     public Tournament editTournament(Tournament tournament) {
         Tournament tt = new Tournament();
         for(Tournament t : mTournaments){
@@ -99,10 +117,8 @@ public class TournamentLab {
         return false;
     }
 
-    public boolean isOwner(long id){
-        for(Tournament t: mSubscriptions){
-            if(t.getUser() == id) return true;
-        }
+    public boolean isOwner(long id, Tournament t){
+        if(t.getUser() == id) return true;
         return false;
     }
 
