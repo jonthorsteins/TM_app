@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.model.Match;
@@ -32,9 +31,9 @@ public class ScoreboardFrag extends Fragment {
     private Tournament mTournament;
     private List<ScoreboardItem> mScoreboard;
     private ScoreboardArrayAdapter mAdapter;
-    private UUID tournamentId;
+    private long tournamentId;
 
-    public static ScoreboardFrag newInstance(UUID tournamentId) {
+    public static ScoreboardFrag newInstance(long tournamentId) {
 
         ScoreboardFrag fragment = new ScoreboardFrag();
         Bundle bundle = new Bundle();
@@ -54,7 +53,7 @@ public class ScoreboardFrag extends Fragment {
 
         Bundle args = getArguments();
         System.out.println(TOURNAMENT_KEY);
-        tournamentId = (UUID) args.getSerializable(TOURNAMENT_KEY);
+        tournamentId = (long) args.getSerializable(TOURNAMENT_KEY);
         mTournament = TournamentLab.get(getActivity()).getTournament(tournamentId);
         mScoreboard = generateScoreboard(mTournament);
 

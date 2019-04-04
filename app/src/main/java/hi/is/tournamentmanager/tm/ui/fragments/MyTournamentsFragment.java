@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.model.Match;
