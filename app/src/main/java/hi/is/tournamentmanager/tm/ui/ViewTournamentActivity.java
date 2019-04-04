@@ -53,8 +53,8 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
     private static final String USER_PREFERENCE = "USER_PREFERENCE";
 
     private static final String TAG = "MainActivity";
-    Tournament t;
-    SharedPreferences mSharedPreferences;
+    private Tournament t;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public void requestUpdate(Tournament t) {
@@ -99,7 +99,6 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         setContentView(R.layout.activity_view_tournament);
         t = (Tournament)getIntent().getSerializableExtra(TOURNAMENT_ITEM);
         mSharedPreferences = getSharedPreferences(TOKEN_PREFERENCE, Context.MODE_PRIVATE);
-
         List<ScoreboardItem> scoreboard = generateScoreboard(t);
 
         TextView textView  = findViewById(R.id.view_tournament_name);
@@ -188,6 +187,7 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                 System.out.println(response.toString());
+                                TournamentLab.get(getApplicationContext()).removeMyTournament(t);
                                 Intent i = new Intent(ViewTournamentActivity.this, ViewAllTournamentsActivity.class);
                                 startActivity(i);
                                 finish();
@@ -389,6 +389,7 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         NetworkHandler.post("/tournaments/"+t.getId()+"/sub", new JSONObject(),"application/json", token, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                TournamentLab.get(getApplicationContext()).addSubscription(t);
                 findViewById(R.id.subscribe).setVisibility(View.GONE);
                 findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
                 LayoutInflater inflater = getLayoutInflater();
@@ -425,6 +426,7 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Context context = getApplicationContext();
+                TournamentLab.get(context).removeSubscription(t);
                 CharSequence text = "You have been unsubscribed!";
                 int duration = Toast.LENGTH_SHORT;
                 findViewById(R.id.subscribe).setVisibility(View.VISIBLE);

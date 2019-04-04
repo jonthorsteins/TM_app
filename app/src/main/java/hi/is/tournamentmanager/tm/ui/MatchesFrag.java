@@ -76,8 +76,8 @@ public class MatchesFrag extends Fragment {
         mTournament = TournamentLab.get(getActivity()).getTournament(tournamentId);
         mMatches= mTournament.getMatches();
 
-        Long user = TokenStore.getUserId(mSharedPreferences);
-        isOwner = TournamentLab.get(getActivity()).isOwner(user);
+        long user = TokenStore.getUserId(mSharedPreferences);
+        isOwner = TournamentLab.get(getActivity()).isOwner(user, mTournament);
 
         if (mMatches.isEmpty()) {
             view.findViewById(R.id.empty).setVisibility(View.VISIBLE);

@@ -248,6 +248,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
                 Tournament t = Mapper.mapToTournament(response);
                 TournamentLab tl = TournamentLab.get(getApplicationContext());
                 tl.addTournament(t);
+                tl.addMyTournament(t);
                 intent.putExtra(TOURNAMENT_ITEM, t);
                 startActivity(intent);
                 finish();
