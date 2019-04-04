@@ -21,6 +21,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,12 +107,18 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         if(TournamentLab.get(getApplicationContext()).isSubscribed(t.getId())) {
             findViewById(R.id.subscribe).setVisibility(View.GONE);
             findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
+            if(t.getSport() == Sport.Handball) {
+                ((ImageView)findViewById(R.id.sport_img)).setImageResource(R.drawable.handball);
+            } else if(t.getSport() == Sport.Basketball) {
+                ((ImageView)findViewById(R.id.sport_img)).setImageResource(R.drawable.basketball);
+            }
         }
 
         Long user = TokenStore.getUserId(mSharedPreferences);
         if(TournamentLab.get(getApplicationContext()).isOwner(user)){
             findViewById(R.id.unsubscribe).setVisibility(View.GONE);
             findViewById(R.id.subscribe).setVisibility(View.GONE);
+            findViewById(R.id.sport_img).setVisibility(View.GONE);
             findViewById(R.id.delete_tournament).setVisibility(View.VISIBLE);
             if(t.getMatches().size() == 0){
                 findViewById(R.id.edit_tournament).setVisibility(View.VISIBLE);

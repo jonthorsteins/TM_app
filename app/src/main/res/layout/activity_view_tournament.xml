@@ -53,6 +53,14 @@
                 android:visibility="gone"
                 android:src="@drawable/ic_star_orange_24dp"/>
             <ImageView
+                android:id="@+id/sport_img"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/label_start_tournament"
+                android:onClick="startTournament"
+                android:src="@drawable/football"/>
+            <ImageView
                 android:id="@+id/delete_tournament"
                 android:visibility="gone"
                 android:layout_width="40dp"
