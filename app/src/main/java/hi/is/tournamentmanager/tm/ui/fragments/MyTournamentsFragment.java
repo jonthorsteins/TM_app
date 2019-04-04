@@ -107,7 +107,6 @@ public class MyTournamentsFragment extends Fragment{
                 textView.setText("Closed");
                 textView.setTextColor(Color.parseColor("#FF0000"));
             }
-            // Change the icon for Windows and iPhone
 
             return rowView;
         }

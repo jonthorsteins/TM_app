@@ -390,6 +390,8 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 TournamentLab.get(getApplicationContext()).addSubscription(t);
+                findViewById(R.id.subscribe).setVisibility(View.GONE);
+                findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
                 LayoutInflater inflater = getLayoutInflater();
                 View layout = inflater.inflate(R.layout.custom_toast,
                         (ViewGroup) findViewById(R.id.custom_toast_container));
