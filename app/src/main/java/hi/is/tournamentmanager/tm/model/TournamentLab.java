@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import cz.msebera.android.httpclient.Header;
 import hi.is.tournamentmanager.tm.helpers.Mapper;
@@ -58,25 +57,12 @@ public class TournamentLab {
         return list;
     }
 
-    public Tournament getTournament(UUID id) {
-        for (Tournament t : mTournaments) {
-            if (t.getUuid().equals(id)) {
-                return t;
-            }
-        }
-
-        System.out.println("Fjöldi tournamenta: " + mTournaments.size());
-        return null;
-    }
-
-    public Tournament getTournament(Long id) {
+    public Tournament getTournament(long id) {
         for (Tournament t : mTournaments) {
             if (t.getId() == id) {
                 return t;
             }
         }
-
-        System.out.println("Fjöldi tournamenta: " + mTournaments.size());
         return null;
     }
 

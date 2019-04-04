@@ -14,28 +14,36 @@
         
         <TextView
             android:id="@+id/alertHomeTeam"
+            android:textSize="24dp"
+            android:padding="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/homeTeamInputScore"
+            android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="0"/>
 
         <TextView
             android:layout_width="wrap_content"
+            android:textSize="24dp"
+            android:padding="10dp"
             android:layout_height="wrap_content"
             android:text="-"/>
 
         <EditText
             android:id="@+id/awayTeamInputScore"
+            android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="0"/>
 
         <TextView
             android:id="@+id/alertAwayTeam"
+            android:textSize="24dp"
+            android:padding="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         

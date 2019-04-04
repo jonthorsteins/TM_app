@@ -24,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.UUID;
 
 import cz.msebera.android.httpclient.Header;
 import hi.is.tournamentmanager.tm.R;
@@ -41,7 +40,7 @@ public class MatchesFrag extends Fragment {
 
     private static final String TOURNAMENT_KEY = "tournament_key";
     private Tournament mTournament;
-    private UUID tournamentId;
+    private long tournamentId;
     public List<Match> mMatches;
     public MatchArrayAdapter mAdapter;
     private boolean isOwner;
@@ -53,7 +52,7 @@ public class MatchesFrag extends Fragment {
         public void requestUpdate(Tournament t);
     }
 
-    public static MatchesFrag newInstance(UUID tournamentId) {
+    public static MatchesFrag newInstance(long tournamentId) {
 
         MatchesFrag fragment = new MatchesFrag();
         Bundle bundle = new Bundle();
@@ -73,7 +72,7 @@ public class MatchesFrag extends Fragment {
 
         Bundle args = getArguments();
         System.out.println(TOURNAMENT_KEY);
-        tournamentId = (UUID) args.getSerializable(TOURNAMENT_KEY);
+        tournamentId = (long) args.getSerializable(TOURNAMENT_KEY);
         mTournament = TournamentLab.get(getActivity()).getTournament(tournamentId);
         mMatches= mTournament.getMatches();
 

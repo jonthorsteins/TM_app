@@ -106,7 +106,9 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         }
 
         Long user = TokenStore.getUserId(mSharedPreferences);
-        if(TournamentLab.get(getApplicationContext()).isOwner(user)){
+        System.out.print("user id = " + user);
+        System.out.print("user id t = " + t.getUser());
+        if(t.getUser().equals(user)){
             findViewById(R.id.unsubscribe).setVisibility(View.GONE);
             findViewById(R.id.subscribe).setVisibility(View.GONE);
             findViewById(R.id.delete_tournament).setVisibility(View.VISIBLE);
@@ -203,7 +205,8 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 System.out.println(response.toString());
-
+                Tournament mTournament = Mapper.mapToTournament(response);
+                TournamentLab.get(getApplicationContext()).replaceTournament(mTournament);
                 Intent i = new Intent(ViewTournamentActivity.this, ViewTournamentActivity.class);
                 i.putExtra(TOURNAMENT_ITEM, Mapper.mapToTournament(response));
                 startActivity(i);
@@ -262,9 +265,9 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         ScoreboardFrag fragment1 = new ScoreboardFrag();
-        fragment1 = fragment1.newInstance(t.getUuid());
+        fragment1 = fragment1.newInstance(t.getId());
         MatchesFrag fragment2 = new MatchesFrag();
-        fragment2 = fragment2.newInstance(t.getUuid());
+        fragment2 = fragment2.newInstance(t.getId());
         adapter.addFragment(fragment1, "Scoreboard");
         adapter.addFragment(fragment2, "Matches");
         viewPager.setAdapter(adapter);
