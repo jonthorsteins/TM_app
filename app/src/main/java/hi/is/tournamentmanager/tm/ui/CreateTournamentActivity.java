@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -193,9 +194,9 @@ public class CreateTournamentActivity extends AppCompatActivity {
 
                 String input = mTeamName.getText().toString();
                 int maxTeams = Integer.parseInt("0"+mMaxTeams.getText().toString());
-                if(input.length() > 0 && teams.size() < maxTeams){
+                if(input.trim().length() > 0 && teams.size() < maxTeams){
                     mTeamName.setText("");
-                    teams.add(input);
+                    teams.add(input.trim());
                     mEmptyList.setVisibility(View.GONE);
                     adapter.notifyDataSetChanged();
                 }
@@ -255,6 +256,16 @@ public class CreateTournamentActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 System.out.println(errorResponse.toString());
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.custom_toast,
+                        (ViewGroup) findViewById(R.id.custom_toast_container));
+                TextView text = (TextView) layout.findViewById(R.id.text);
+                text.setText("Error creating tournament");
+                Toast toast = new Toast(getApplicationContext());
+                toast.setGravity(Gravity.BOTTOM, 0, 50);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         });
 

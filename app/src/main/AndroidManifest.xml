@@ -15,7 +15,7 @@
         <activity
             android:name=".ui.ViewTournamentActivity"
             android:label="@string/title_activity_view_tournament"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.SignupActivity"
             android:parentActivityName=".ui.LoginActivity"
@@ -23,11 +23,22 @@
         <activity
             android:name=".ui.LoginActivity"
             android:noHistory="true" />
-        <activity android:name=".ui.ViewProfileActivity" />
-        <activity android:name=".ui.ViewAllTournamentsActivity" android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.EditTournamentActivity" />
-        <activity android:name=".ui.EditMatchActivity" />
-        <activity android:name=".ui.CreateTournamentActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".ui.ViewProfileActivity"
+            android:launchMode="singleInstance"/>
+        <activity
+            android:name=".ui.ViewAllTournamentsActivity"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.EditTournamentActivity"
+            android:launchMode="singleInstance"/>
+        <activity
+            android:name=".ui.EditMatchActivity"
+            android:launchMode="singleInstance"/>
+        <activity
+            android:name=".ui.CreateTournamentActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

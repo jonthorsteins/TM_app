@@ -10,6 +10,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 
 import android.support.v4.app.Fragment;
@@ -18,6 +20,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,6 +107,11 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         if(TournamentLab.get(getApplicationContext()).isSubscribed(t.getId())) {
             findViewById(R.id.subscribe).setVisibility(View.GONE);
             findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
+            if(t.getSport() == Sport.Handball) {
+                ((ImageView)findViewById(R.id.sport_img)).setImageResource(R.drawable.handball);
+            } else if(t.getSport() == Sport.Basketball) {
+                ((ImageView)findViewById(R.id.sport_img)).setImageResource(R.drawable.basketball);
+            }
         }
 
         Long user = TokenStore.getUserId(mSharedPreferences);
@@ -111,6 +120,7 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         if(t.getUser().equals(user)){
             findViewById(R.id.unsubscribe).setVisibility(View.GONE);
             findViewById(R.id.subscribe).setVisibility(View.GONE);
+            findViewById(R.id.sport_img).setVisibility(View.GONE);
             findViewById(R.id.delete_tournament).setVisibility(View.VISIBLE);
             if(t.getMatches().size() == 0){
                 findViewById(R.id.edit_tournament).setVisibility(View.VISIBLE);
@@ -186,6 +196,16 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
                             @Override
                             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                                 System.out.println(errorResponse.toString());
+                                LayoutInflater inflater = getLayoutInflater();
+                                View layout = inflater.inflate(R.layout.custom_toast,
+                                        (ViewGroup) findViewById(R.id.custom_toast_container));
+                                TextView text = (TextView) layout.findViewById(R.id.text);
+                                text.setText("Error deleting tournament");
+                                Toast toast = new Toast(getApplicationContext());
+                                toast.setGravity(Gravity.BOTTOM, 0, 50);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
+                                toast.show();
                             }
                         });
                     }
@@ -216,6 +236,16 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 System.out.println(errorResponse.toString());
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.custom_toast,
+                        (ViewGroup) findViewById(R.id.custom_toast_container));
+                TextView text = (TextView) layout.findViewById(R.id.text);
+                text.setText("Error starting tournament");
+                Toast toast = new Toast(getApplicationContext());
+                toast.setGravity(Gravity.BOTTOM, 0, 50);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         });
     }
@@ -359,24 +389,29 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         NetworkHandler.post("/tournaments/"+t.getId()+"/sub", new JSONObject(),"application/json", token, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Context context = getApplicationContext();
-                CharSequence text = "Subscribed success!";
-                int duration = Toast.LENGTH_SHORT;
-                findViewById(R.id.subscribe).setVisibility(View.GONE);
-                findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
-                (TournamentLab.get(getApplicationContext())).addSubscription(t);
-                Toast toast = Toast.makeText(context, text, duration);
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.custom_toast,
+                        (ViewGroup) findViewById(R.id.custom_toast_container));
+                TextView text = (TextView) layout.findViewById(R.id.text);
+                text.setText("You are now following this tournament");
+                Toast toast = new Toast(getApplication());
+                toast.setGravity(Gravity.BOTTOM, 0, 50);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
                 toast.show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Context context = getApplicationContext();
-                CharSequence text = "Subscribed failed!";
-                int duration = Toast.LENGTH_SHORT;
-
-
-                Toast toast = Toast.makeText(context, text, duration);
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.custom_toast,
+                        (ViewGroup) findViewById(R.id.custom_toast_container));
+                TextView text = (TextView) layout.findViewById(R.id.text);
+                text.setText("Error unsubscribing");
+                Toast toast = new Toast(getApplication());
+                toast.setGravity(Gravity.BOTTOM, 0, 50);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
                 toast.show();
             }
         });
@@ -388,7 +423,7 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Context context = getApplicationContext();
-                CharSequence text = "Unsubscribed success!";
+                CharSequence text = "You have been unsubscribed!";
                 int duration = Toast.LENGTH_SHORT;
                 findViewById(R.id.subscribe).setVisibility(View.VISIBLE);
                 findViewById(R.id.unsubscribe).setVisibility(View.GONE);
@@ -400,7 +435,7 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Context context = getApplicationContext();
-                CharSequence text = "Unsubscribed failed!";
+                CharSequence text = "Unsubscribe failed!";
                 int duration = Toast.LENGTH_SHORT;
 
                 Toast toast = Toast.makeText(context, text, duration);
