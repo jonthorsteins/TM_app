@@ -11,6 +11,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import cz.msebera.android.httpclient.HttpHeaders;
 import cz.msebera.android.httpclient.entity.StringEntity;
@@ -31,8 +32,8 @@ public class NetworkHandler {
     public static void post(String url, JSONObject data, String type, String token, AsyncHttpResponseHandler responseHandler) {
         StringEntity body = null;
         try {
-            body = new StringEntity(data.toString());
-        } catch (UnsupportedEncodingException e) {
+            body = new StringEntity(data.toString(), "UTF-8");
+        } catch (Exception e) {
             e.printStackTrace();
             return;
         }
@@ -47,8 +48,8 @@ public class NetworkHandler {
     public static void patch(String url, JSONObject data, String type, String token, AsyncHttpResponseHandler responseHandler) {
         StringEntity body = null;
         try {
-            body = new StringEntity(data.toString());
-        } catch (UnsupportedEncodingException e) {
+            body = new StringEntity(data.toString(), "UTF-8");
+        } catch (Exception e) {
             e.printStackTrace();
             return;
         }
