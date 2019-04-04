@@ -39,6 +39,7 @@ import hi.is.tournamentmanager.tm.R;
 import hi.is.tournamentmanager.tm.helpers.Mapper;
 import hi.is.tournamentmanager.tm.helpers.NetworkHandler;
 import hi.is.tournamentmanager.tm.helpers.TokenStore;
+import hi.is.tournamentmanager.tm.model.Sport;
 import hi.is.tournamentmanager.tm.model.Tournament;
 import hi.is.tournamentmanager.tm.model.TournamentLab;
 
@@ -218,8 +219,14 @@ public class ViewAllTournamentsActivity extends ListActivity {
             View rowView = inflater.inflate(R.layout.tournament_list_row, parent, false);
             Tournament t = values.get(position);
             TextView textView = (TextView) rowView.findViewById(R.id.tournament_name);
-            ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.sport_img);
             textView.setText(t.getName());
+
+            if(t.getSport() == Sport.Basketball) {
+                imageView.setImageResource(R.drawable.basketball);
+            } else if(t.getSport() == Sport.Handball) {
+                imageView.setImageResource(R.drawable.handball);
+            }
 
 
             textView = (TextView) rowView.findViewById(R.id.tournament_status);
