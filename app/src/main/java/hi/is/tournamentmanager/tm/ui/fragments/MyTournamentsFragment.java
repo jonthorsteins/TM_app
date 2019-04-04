@@ -85,8 +85,14 @@ public class MyTournamentsFragment extends Fragment{
             View rowView = inflater.inflate(R.layout.tournament_list_row, parent, false);
             Tournament t = values.get(position);
             TextView textView = (TextView) rowView.findViewById(R.id.tournament_name);
-            ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+            ImageView imageView = (ImageView) rowView.findViewById(R.id.sport_img);
             textView.setText(t.getName());
+
+            if(t.getSport() == Sport.Basketball) {
+                imageView.setImageResource(R.drawable.basketball);
+            } else if(t.getSport() == Sport.Handball) {
+                imageView.setImageResource(R.drawable.handball);
+            }
 
 
             textView = (TextView) rowView.findViewById(R.id.tournament_status);

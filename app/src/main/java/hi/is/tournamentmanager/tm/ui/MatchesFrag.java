@@ -168,6 +168,16 @@ public class MatchesFrag extends Fragment {
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                                     System.out.println(errorResponse.toString());
+                                    LayoutInflater inflater = getLayoutInflater();
+                                    View layout = inflater.inflate(R.layout.custom_toast,
+                                            (ViewGroup) getActivity().findViewById(R.id.custom_toast_container));
+                                    TextView text = (TextView) layout.findViewById(R.id.text);
+                                    text.setText(R.string.login_failed);
+                                    Toast toast = new Toast(getContext());
+                                    toast.setGravity(Gravity.BOTTOM, 0, 50);
+                                    toast.setDuration(Toast.LENGTH_LONG);
+                                    toast.setView(layout);
+                                    toast.show();
                                 }
                             });
 
