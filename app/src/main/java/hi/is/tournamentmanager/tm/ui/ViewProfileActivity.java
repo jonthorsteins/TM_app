@@ -213,4 +213,12 @@ public class ViewProfileActivity extends AppCompatActivity {
             return rowView;
         }
     }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
 }

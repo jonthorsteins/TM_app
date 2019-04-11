@@ -32,7 +32,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.EditTournamentActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.EditMatchActivity"
             android:launchMode="singleInstance"/>

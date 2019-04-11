@@ -199,6 +199,17 @@ public class CreateTournamentActivity extends AppCompatActivity {
                     teams.add(input.trim());
                     mEmptyList.setVisibility(View.GONE);
                     adapter.notifyDataSetChanged();
+                } else {
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.custom_toast,
+                            (ViewGroup) findViewById(R.id.custom_toast_container));
+                    TextView text = (TextView) layout.findViewById(R.id.text);
+                    text.setText(R.string.at_max_teams);
+                    Toast toast = new Toast(getApplicationContext());
+                    toast.setGravity(Gravity.BOTTOM, 0, 50);
+                    toast.setDuration(Toast.LENGTH_LONG);
+                    toast.setView(layout);
+                    toast.show();
                 }
             }
         });

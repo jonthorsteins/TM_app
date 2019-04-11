@@ -187,9 +187,11 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                 System.out.println(response.toString());
-                                TournamentLab.get(getApplicationContext()).removeMyTournament(t);
-                                Intent i = new Intent(ViewTournamentActivity.this, ViewAllTournamentsActivity.class);
+                                TournamentLab.get(getApplicationContext()).removeTournament(t);
+                                /*
+                                Intent i = new Intent(ViewTournamentActivity.this, ViewProfileActivity.class);
                                 startActivity(i);
+                                */
                                 finish();
                             }
 
@@ -389,6 +391,8 @@ public class ViewTournamentActivity extends AppCompatActivity implements Matches
         NetworkHandler.post("/tournaments/"+t.getId()+"/sub", new JSONObject(),"application/json", token, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                findViewById(R.id.subscribe).setVisibility(View.GONE);
+                findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);
                 TournamentLab.get(getApplicationContext()).addSubscription(t);
                 findViewById(R.id.subscribe).setVisibility(View.GONE);
                 findViewById(R.id.unsubscribe).setVisibility(View.VISIBLE);

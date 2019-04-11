@@ -76,6 +76,17 @@ public class TournamentLab {
         mMyTournaments.add(tournament);
     }
 
+    public void removeTournament(Tournament tournament) {
+        removeSubscription(tournament);
+        removeMyTournament(tournament);
+        for (int i=0; i<mTournaments.size(); i++ ) {
+            if (tournament.getId() == mTournaments.get(i).getId() ) {
+                mTournaments.remove(i);
+                return;
+            }
+        }
+    }
+
     public void removeSubscription(Tournament tournament) {
         for (int i=0; i<mSubscriptions.size(); i++ ) {
             if (tournament.getId() == mSubscriptions.get(i).getId() ) {
@@ -94,20 +105,13 @@ public class TournamentLab {
         }
     }
 
-    public Tournament editTournament(Tournament tournament) {
-        Tournament tt = new Tournament();
-        for(Tournament t : mTournaments){
-            if(t.getId() == tournament.getId()){
-                t.setMaxTeams(tournament.getMaxTeams());
-                t.setName(tournament.getName());
-                t.setSignUpExpiration(tournament.getSignUpExpiration());
-                t.setNrOfRounds(tournament.getNrOfRounds());
-                t.setTeams(tournament.getTeams());
-                t.setSport(tournament.getSport());
-                tt = t;
+    public void editTournament(Tournament tournament) {
+        for(int i=0; i<mTournaments.size(); i++) {
+            if(mTournaments.get(i).getId() == tournament.getId()) {
+                mTournaments.set(i, tournament);
+                return;
             }
         }
-        return tt;
     }
 
     public boolean isSubscribed(long id) {

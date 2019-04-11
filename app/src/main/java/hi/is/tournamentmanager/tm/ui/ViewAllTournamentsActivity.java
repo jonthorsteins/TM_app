@@ -69,10 +69,7 @@ public class ViewAllTournamentsActivity extends ListActivity {
                     finish();
                     return true;
                 case R.id.view:
-                    i = ViewAllTournamentsActivity.newIntent(ViewAllTournamentsActivity.this, true);
-                    // startActivityForResult(i, REQUEST_CODE_VIEWALLTOURNAMENTS);
-                    startActivity(i);
-                    finish();
+                    buildTournamentList();
                     return true;
                 case R.id.create:
                     i = new Intent(ViewAllTournamentsActivity.this, CreateTournamentActivity.class);
@@ -91,10 +88,9 @@ public class ViewAllTournamentsActivity extends ListActivity {
         // i.putExtra(EXTRA_MESSAGE, answerIsTrue);
         return i;
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_all_tournaments);
+
+
+    private void buildTournamentList() {
         mSharedPreferences = getSharedPreferences(TOKEN_PREFERENCE, Context.MODE_PRIVATE);
 
         final Context ct = getApplicationContext();
@@ -129,6 +125,16 @@ public class ViewAllTournamentsActivity extends ListActivity {
                 setListAdapter(adapter);
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_view_all_tournaments);
+        buildTournamentList();
+
+        String token = TokenStore.getToken(mSharedPreferences);
+
         NetworkHandler.get("/profile", null, token, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -246,5 +252,13 @@ public class ViewAllTournamentsActivity extends ListActivity {
 
             return rowView;
         }
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 }

@@ -30,6 +30,8 @@
         <item>Basketball</item>
     </string-array>
 
+    <string name="at_max_teams">Already at max teams</string>
+
     <string name="title_activity_view_tournament">ViewTournamentActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
@@ -41,7 +43,6 @@
     <string name="label_delete_tournament">Delete</string>
     <string name="label_start_tournament">Start</string>
     <string name="label_edit_tournament">Edit</string>
-
     <string name="no_tournaments">No tournaments</string>
 
     <!-- scoreboard_fragment -->
@@ -62,7 +63,7 @@
     <string name="header_played">Played</string>
     <string name="msg_no_matches">No matches exist</string>
     <string name="toast_invalid_match_score">Error: Match score has to be non negative number</string>
-
+    <string name="Setting_Match_Score_Failed">Setting match score failed</string>
 
 
 </resources>

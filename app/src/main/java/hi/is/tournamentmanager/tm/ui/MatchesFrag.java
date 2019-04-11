@@ -171,7 +171,7 @@ public class MatchesFrag extends Fragment {
                                     View layout = inflater.inflate(R.layout.custom_toast,
                                             (ViewGroup) getActivity().findViewById(R.id.custom_toast_container));
                                     TextView text = (TextView) layout.findViewById(R.id.text);
-                                    text.setText(R.string.login_failed);
+                                    text.setText(R.string.Setting_Match_Score_Failed);
                                     Toast toast = new Toast(getContext());
                                     toast.setGravity(Gravity.BOTTOM, 0, 50);
                                     toast.setDuration(Toast.LENGTH_LONG);
