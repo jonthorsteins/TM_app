@@ -52,6 +52,7 @@ public class ViewProfileActivity extends AppCompatActivity {
     SharedPreferences mSharedPreferences;
     private List<Tournament> mTournaments;
     private List<Tournament> mProfile;
+    private List<Tournament> aaa;
     ImageView mLogout;
 
     TextView mViewAll;
